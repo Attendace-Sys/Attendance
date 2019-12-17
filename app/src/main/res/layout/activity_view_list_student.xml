@@ -34,7 +34,7 @@
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="0.1"
@@ -67,10 +67,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/courseNameTxt"
@@ -99,6 +102,140 @@
             android:layout_marginBottom="10dp"
             android:background="@color/colorGray" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Số buổi đã học: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/num_learned_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view15"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorGray" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_weight="0.5"
+            android:background="@color/colorGray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/view10"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray"></View>
+
+            <TextView
+                android:id="@+id/title_txt"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="MSSV"
+                android:textColor="@color/colorPrimary1"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray"></View>
+
+            <TextView
+                android:id="@+id/title2_txt"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Họ tên"
+                android:textColor="@color/colorPrimary1"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/view12"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray"></View>
+
+            <TextView
+                android:id="@+id/title3_txt"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Có mặt"
+                android:textColor="#25C72B"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/view13"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray"></View>
+
+            <TextView
+                android:id="@+id/title4_txt"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Vắng"
+                android:textColor="#FF5722"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/view14"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray"></View>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorGray" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -107,5 +244,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/info_layout"
         android:background="@android:color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:scrollbars="vertical" />
 </LinearLayout>

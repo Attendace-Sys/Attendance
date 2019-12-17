@@ -18,6 +18,12 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <View
+            android:id="@+id/view9"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorGray"></View>
+
         <TextView
             android:id="@+id/student_id_txt"
             android:layout_width="100dp"
@@ -48,31 +54,22 @@
             android:layout_height="match_parent"
             android:background="@color/colorGray"></View>
 
-        <LinearLayout
+
+        <CheckBox
+            android:id="@+id/present_chbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center|right"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Có mặt"
+            android:textColor="#1B850E"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/present_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Có mặt"
-                android:textColor="#04B908"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/abdent_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Vắng"
-                android:textColor="#F44336"
-                android:textSize="18sp" />
-        </LinearLayout>
-
+        <View
+            android:id="@+id/view11"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorGray"></View>
     </LinearLayout>
 
     <View

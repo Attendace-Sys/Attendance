@@ -30,7 +30,8 @@ public class ViewListStudentActivity extends AppCompatActivity {
     //Example data
     String studentIdList[] = {"15520001", "15520002", "15520003", "15520004", "15520005", "15520006"};
     String studentNameList[] = {"Nguyễn Văn A", "Nguyễn Thị B", "Lê Đình C", "Trần Tuyết E", "Cao Khánh F", "Vũ Văn H"};
-
+    int prsents[] = {10, 9, 10, 8, 10, 10};
+    int absent[] = {0, 1, 0, 2, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,8 @@ public class ViewListStudentActivity extends AppCompatActivity {
             Student student = new Student();
             student.setStudentId(studentIdList[i]);
             student.setStudentName(studentNameList[i]);
-
+            student.setNumber_present(prsents[i]);
+            student.setNumber_absent(absent[i]);
 
             studentList.add(student);
         }

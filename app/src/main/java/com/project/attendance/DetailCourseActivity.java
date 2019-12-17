@@ -2,6 +2,7 @@ package com.project.attendance;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -45,7 +46,6 @@ public class DetailCourseActivity extends AppCompatActivity {
         mRoomTv = (TextView) findViewById(R.id.d_room_txt);
         back = (ImageView) findViewById(R.id.back);
         checkingRecyclerView = (RecyclerView) findViewById(R.id.list_checking_recyclerView);
-        btn_checking = (Button) findViewById((R.id.btn_Cheking));
         btn_viewlist = (Button) findViewById(R.id.btn_viewlist);
 
         final Intent intent = getIntent();
@@ -72,13 +72,16 @@ public class DetailCourseActivity extends AppCompatActivity {
             }
         });
 
-        btn_checking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentBack = new Intent(DetailCourseActivity.this, DetectActivity.class);
-                startActivity(intentBack);
-            }
-        });
+//        btn_checking.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intentBack = new Intent(DetailCourseActivity.this, DetectActivity.class);
+////                startActivity(intentBack);
+//                Intent intent = new Intent(
+//                        MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+//                startActivity(intent);
+//            }
+//        });
 
         btn_viewlist.setOnClickListener(new View.OnClickListener() {
             @Override

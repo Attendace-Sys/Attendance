@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.project.attendance.Model.Attendance;
+import com.project.attendance.Model.Checking;
 import com.project.attendance.R;
 
 import java.util.ArrayList;
@@ -33,13 +35,13 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
     public void onBindViewHolder(@NonNull AttendanceDataAdapter.ViewHolder viewHolder, int i) {
         viewHolder.id.setText(attendanceList.get(i).getStudentId());
         viewHolder.name.setText(attendanceList.get(i).getStudentName());
-        if (attendanceList.get(i).getPresent() == false)
+        if (attendanceList.get(i).getPresent() == true)
         {
-            viewHolder.isPresent.setVisibility(View.GONE);
+            viewHolder.isPresent.setChecked(true);
         }
         else
         {
-            viewHolder.isAbsent.setVisibility(View.GONE);
+            viewHolder.isPresent.setChecked(false);
         }
     }
 
@@ -50,14 +52,14 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id, name, isPresent, isAbsent;
+        TextView id, name;
+        CheckBox isPresent;
 
         public ViewHolder(View view) {
             super(view);
             id = (TextView) view.findViewById(R.id.student_id_txt);
             name = (TextView) view.findViewById(R.id.student_name_txt);
-            isPresent = (TextView) view.findViewById(R.id.present_txt);
-            isAbsent = (TextView) view.findViewById(R.id.abdent_txt);
+            isPresent = (CheckBox) view.findViewById(R.id.present_chbox);
         }
 
     }

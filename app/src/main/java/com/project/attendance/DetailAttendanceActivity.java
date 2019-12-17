@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
     TextView m_num_present, m_num_absent;
     RecyclerView list_attend_recyclerView;
     ImageView back_btn;
+    Button checking_btn;
 
     String className, classId, room, timeOfWeek, dateAttend;
     int numberOfWeek, numberPresent, numberAbsent;
@@ -45,6 +47,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         m_date = (TextView) findViewById(R.id.date_txt);
         m_num_present = (TextView) findViewById(R.id.num_presnt_txt);
         m_num_absent = (TextView) findViewById(R.id.num_absent_txt);
+        checking_btn = (Button) findViewById(R.id.checking_btn);
 
         list_attend_recyclerView = (RecyclerView) findViewById(R.id.list_attend_recyclerView);
 
@@ -88,6 +91,12 @@ public class DetailAttendanceActivity extends AppCompatActivity {
             }
         });
 
+        checking_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void addAttendance() {

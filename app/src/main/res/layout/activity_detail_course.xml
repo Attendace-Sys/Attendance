@@ -91,25 +91,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
-
-        <Button
-            android:id="@+id/btn_Cheking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="#FAAB1A"
-            android:text="Điểm danh" />
 
         <Button
             android:id="@+id/btn_viewlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#5475E9"
-            android:text="Xem danh sách" />
+
+            android:backgroundTint="#ECE49E"
+            android:text="Tình hình điểm danh"
+            android:textColor="@color/colorOrange"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -118,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/topHeader"
         android:background="@android:color/white"
+        android:padding="10dp"
         android:scrollbars="vertical" />
 
 </LinearLayout>

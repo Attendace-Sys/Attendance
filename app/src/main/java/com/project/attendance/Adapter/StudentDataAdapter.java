@@ -34,6 +34,8 @@ public class StudentDataAdapter extends RecyclerView.Adapter<StudentDataAdapter.
     public void onBindViewHolder(@NonNull StudentDataAdapter.ViewHolder viewHolder, int i) {
         viewHolder.id.setText(studentList.get(i).getStudentId());
         viewHolder.name.setText(studentList.get(i).getStudentName());
+        viewHolder.number_present.setText("" + studentList.get(i).getNumber_present());
+        viewHolder.number_absent.setText("" + studentList.get(i).getNumber_absent());
     }
 
     @Override
@@ -43,12 +45,14 @@ public class StudentDataAdapter extends RecyclerView.Adapter<StudentDataAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id, name;
+        TextView id, name, number_present, number_absent;
 
         public ViewHolder(View view) {
             super(view);
             id = (TextView) view.findViewById(R.id.student_id_txt);
             name = (TextView) view.findViewById(R.id.student_name_txt);
+            number_present = (TextView) view.findViewById(R.id.number_present_txt);
+            number_absent = (TextView) view.findViewById(R.id.number_absent_txt);
         }
 
     }
