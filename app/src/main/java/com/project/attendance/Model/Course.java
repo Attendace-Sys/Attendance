@@ -8,6 +8,15 @@ public class Course {
     String room;
     String status;
 
+    public Course(String id, String name, String teacher, String time, String room, String status) {
+        this.id = id;
+        this.name = name;
+        this.teacher = teacher;
+        this.time = time;
+        this.room = room;
+        this.status = status;
+    }
+
     public String getId() {
         return id;
     }

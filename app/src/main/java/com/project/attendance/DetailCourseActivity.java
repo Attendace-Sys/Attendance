@@ -1,6 +1,7 @@
 package com.project.attendance;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -10,13 +11,22 @@ import android.widget.TextView;
 
 import com.project.attendance.Adapter.CheckingCardDataAdapter;
 import com.project.attendance.Model.Checking;
+import com.project.attendance.Networking.ApiConfig;
+import com.project.attendance.Networking.AppConfig;
+
+import com.project.attendance.Networking.Schedule;
+import com.project.attendance.Networking.Schedules;
 
 import java.util.ArrayList;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailCourseActivity extends AppCompatActivity {
 
@@ -62,6 +72,8 @@ public class DetailCourseActivity extends AppCompatActivity {
 
         checkingList = new ArrayList<Checking>();
 
+        callApi();
+
         addChecking();
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -72,16 +84,6 @@ public class DetailCourseActivity extends AppCompatActivity {
             }
         });
 
-//        btn_checking.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent intentBack = new Intent(DetailCourseActivity.this, DetectActivity.class);
-////                startActivity(intentBack);
-//                Intent intent = new Intent(
-//                        MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-//                startActivity(intent);
-//            }
-//        });
 
         btn_viewlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,26 +99,68 @@ public class DetailCourseActivity extends AppCompatActivity {
         });
     }
 
+    private void callApi() {
+        ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
+
+
+        Call<Schedules> call = getResponse.getListSchedule("Token "+ Global.token, mId);
+        call.enqueue(new Callback<Schedules>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<Schedules> call, Response<Schedules> response) {
+                if(response.isSuccessful()) {
+
+                    Schedules schedules = (Schedules) response.body();
+                    checkingList = convertClassesFromCourses(schedules);
+                    addChecking();
+
+                }
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            private ArrayList<Checking> convertClassesFromCourses(Schedules schedules) {
+
+                ArrayList<Checking> list = new ArrayList<>();
+
+                for ( Schedule item : schedules.getSchedule()) {
+
+                    Checking schedule = convertClassToCourse(item);
+                    list.add(schedule);
+                }
+
+                return list;
+            }
+
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            private Checking convertClassToCourse(Schedule item) {
+
+                String classId = item.getCourse();
+                String className = mName;
+                String room = mRoom;
+                int numberOfWeek = Math.toIntExact(item.getScheduleNumberOfDay());
+                String timeOfWeek = mTime;
+                String scheduleCode = item.getScheduleCode();
+                String date = item.getScheduleDate();
+                int number_present = 0;
+                int number_absent = 0 ;
+                Checking checking = new Checking(classId, className, room, numberOfWeek, timeOfWeek, scheduleCode, date, number_present, number_absent );
+                return checking;
+            }
+
+            @Override
+            public void onFailure(Call<Schedules> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     private void addChecking() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         checkingRecyclerView.setLayoutManager(linearLayoutManager);
         checkingRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        for (int i = 0; i < 3; i++)
-        {
-            Checking checking = new Checking();
-            checking.setClassId(mId);
-            checking.setClassName(mName);
-            checking.setRoom(mRoom);
-            checking.setNumberOfWeek(i + 1);
-            checking.setTimeOfWeek(mTime);
-            checking.setDate(dates[i]);
-            checking.setNumber_present(number_prent[i]);
-            checking.setNumber_absent(number_absnet[i]);
-
-            checkingList.add(checking);
-        }
 
         CheckingCardDataAdapter adapter = new CheckingCardDataAdapter(this, checkingList);
         checkingRecyclerView.setAdapter(adapter);

@@ -52,7 +52,7 @@
 
 
             <com.project.attendance.customfonts.MyTextView
-                android:id="@+id/studentIdTxt"
+                android:id="@+id/teacherIdTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -65,7 +65,7 @@
 
 
             <com.project.attendance.customfonts.MyTextView
-                android:id="@+id/studentIdTxt2"
+                android:id="@+id/teacherIdTxt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -1,21 +1,46 @@
 package com.project.attendance;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import com.project.attendance.Adapter.AttendanceDataAdapter;
 import com.project.attendance.Model.Attendance;
+import com.project.attendance.Model.Checking;
+import com.project.attendance.Networking.ApiConfig;
+import com.project.attendance.Networking.AppConfig;
+import com.project.attendance.Networking.Attend;
+import com.project.attendance.Networking.Attendances;
+import com.project.attendance.Networking.DataAttendSend;
+import com.project.attendance.Networking.Schedule;
+import com.project.attendance.Networking.Schedules;
+import com.project.attendance.Networking.UpdateAttendance;
+import com.project.attendance.Utils.Utils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailAttendanceActivity extends AppCompatActivity {
 
@@ -24,16 +49,19 @@ public class DetailAttendanceActivity extends AppCompatActivity {
     RecyclerView list_attend_recyclerView;
     ImageView back_btn;
     Button checking_btn;
+    Button sendData_btn;
 
-    String className, classId, room, timeOfWeek, dateAttend;
+    String className, classId, room, timeOfWeek, dateAttend, scheduleCode;
     int numberOfWeek, numberPresent, numberAbsent;
 
     ArrayList<Attendance> attendanceList;
 
-    //Example data
-    String studentIdList[] = {"15520001", "15520002", "15520003", "15520004", "15520005", "15520006"};
-    String studentNameList[] = {"Nguyễn Văn A", "Nguyễn Thị B", "Lê Đình C", "Trần Tuyết E", "Cao Khánh F", "Vũ Văn H"};
-    Boolean isPresentList[] = {true, true, true, false, true, true};
+    AttendanceDataAdapter adapter;
+
+//    //Example data
+//    String studentIdList[] = {"15520001", "15520002", "15520003", "15520004", "15520005", "15520006"};
+//    String studentNameList[] = {"Nguyễn Văn A", "Nguyễn Thị B", "Lê Đình C", "Trần Tuyết E", "Cao Khánh F", "Vũ Văn H"};
+//    Boolean isPresentList[] = {true, true, true, false, true, true};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +76,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         m_num_present = (TextView) findViewById(R.id.num_presnt_txt);
         m_num_absent = (TextView) findViewById(R.id.num_absent_txt);
         checking_btn = (Button) findViewById(R.id.checking_btn);
+        sendData_btn = (Button) findViewById(R.id.senddata_btn);
 
         list_attend_recyclerView = (RecyclerView) findViewById(R.id.list_attend_recyclerView);
 
@@ -59,6 +88,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         room = intent.getStringExtra("room");
         numberOfWeek = intent.getIntExtra("numberOfWeek", 1);
         timeOfWeek = intent.getStringExtra("timeOfWeek");
+        scheduleCode = intent.getStringExtra("scheduleCode");
         dateAttend = intent.getStringExtra("date");
         numberPresent = intent.getIntExtra("numberPresent", 0);
         numberAbsent = intent.getIntExtra("numberAbsent", 0);
@@ -70,12 +100,14 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         m_date.setText(dateAttend);
 //        m_num_present.setText(String.valueOf(numberPresent));
 //        m_num_absent.setText(String.valueOf(numberAbsent));
-        m_num_present.setText(String.valueOf(5));
-        m_num_absent.setText(String.valueOf(1));
+
 
         attendanceList = new ArrayList<Attendance>();
 
-        addAttendance();
+        callApi();
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Không có thông tin nào thay đổi.");
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +129,169 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
             }
         });
+
+        sendData_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Attendance> updateListItem = adapter.getUpdateList();
+
+                if (updateListItem.size() != 0)
+                {
+                    String message = "  Đang gửi dữ liệu.\n  Vui lòng chờ...";
+                    Utils.showLoadingIndicator(DetailAttendanceActivity.this, message);
+
+                    sendUpdateData(updateListItem);
+                }
+                else
+                {
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
+    }
+
+
+
+    private void sendUpdateData(ArrayList<Attendance> updateListItem) {
+
+        List<UpdateAttendance> listUpdateAttend = new ArrayList<UpdateAttendance>();
+
+
+        for (Attendance item: updateListItem)
+        {
+            UpdateAttendance updateAttendance = convertUpdateAttendanceFromAttendance(item);
+            listUpdateAttend.add(updateAttendance);
+        }
+        DataAttendSend dataAttendSend = new DataAttendSend(scheduleCode, listUpdateAttend);
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(dataAttendSend);
+
+        JSONObject ob = new JSONObject();
+        try {
+             ob = new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObject convertedObject = new Gson().fromJson(json, JsonObject.class);
+
+        callApi(convertedObject);
+
+    }
+
+    private void callApi(JsonObject json) {
+        ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
+
+
+        Call<ResponseBody> call = getResponse.sendUpdateAttendanceList("Token "+ Global.token, json);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+
+                    Utils.hideLoadingIndicator();
+                    Toast.makeText(DetailAttendanceActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+
+                }else
+                {
+                    Utils.hideLoadingIndicator();
+                    Toast.makeText(DetailAttendanceActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utils.hideLoadingIndicator();
+                Toast.makeText(DetailAttendanceActivity.this, "Lỗi xảy ra.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+
+    private UpdateAttendance convertUpdateAttendanceFromAttendance(Attendance item) {
+        String mAttendanceCode = item.getAttendanceCode();
+        String mStudentCode = item.getStudentId();
+        Boolean mAbsentStatus = item.getPresent();
+
+        UpdateAttendance updateAttendance = new UpdateAttendance(mAttendanceCode, mStudentCode, mAbsentStatus);
+        return updateAttendance;
+    }
+
+    private void callApi() {
+        ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
+
+
+        Call<Attendances> call = getResponse.getListAttendanceOfOneSchedule("Token "+ Global.token, scheduleCode);
+        call.enqueue(new Callback<Attendances>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<Attendances> call, Response<Attendances> response) {
+                if(response.isSuccessful()) {
+
+                    Attendances attendances = (Attendances) response.body();
+                    attendanceList = convertClassesFromCourses(attendances);
+                    addAttendance();
+
+                    setNumPresent();
+
+                }
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            private ArrayList<Attendance> convertClassesFromCourses(Attendances attendances) {
+
+                ArrayList<Attendance> list = new ArrayList<>();
+
+                for ( Attend item : attendances.getAttends()) {
+
+                    Attendance attendance = convertClassToCourse(item);
+                    list.add(attendance);
+                }
+
+                return list;
+            }
+
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            private Attendance convertClassToCourse(Attend item) {
+
+                String attendanceCode = item.getAttendanceCode();
+                String studentId = item.getStudent().getStudentCode();
+                String studentName = item.getStudent().getFirstName();
+                Boolean isPresent = item.getAbsentStatus();
+
+                Attendance attendance = new Attendance(attendanceCode, studentId, studentName, isPresent);
+                return attendance;
+            }
+
+            @Override
+            public void onFailure(Call<Attendances> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void setNumPresent() {
+        int sumStudent = attendanceList.size();
+        int count = 0;
+        for ( Attendance item : attendanceList) {
+            if (item.getPresent() == false)
+                count ++;
+        }
+
+        int numPresent = sumStudent - count;
+
+        m_num_present.setText(String.valueOf(numPresent));
+        m_num_absent.setText(String.valueOf(count));
+
     }
 
     private void addAttendance() {
@@ -105,17 +300,8 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         list_attend_recyclerView.setLayoutManager(linearLayoutManager);
         list_attend_recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        for (int i = 0; i < studentIdList.length; i++)
-        {
-            Attendance attend = new Attendance();
-            attend.setStudentId(studentIdList[i]);
-            attend.setStudentName(studentNameList[i]);
-            attend.setPresent(isPresentList[i]);
 
-            attendanceList.add(attend);
-        }
-
-        AttendanceDataAdapter adapter = new AttendanceDataAdapter(this, attendanceList);
+        adapter = new AttendanceDataAdapter(this, attendanceList);
         list_attend_recyclerView.setAdapter(adapter);
     }
 }

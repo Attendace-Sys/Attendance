@@ -60,8 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:checked="true"
-            android:text="Có mặt"
+            android:checked="false"
             android:textColor="#1B850E"
             android:textSize="18sp" />
 

@@ -299,7 +299,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/checking_btn"
@@ -309,5 +309,14 @@
             android:padding="10dp"
             android:text="Tiến hành điểm danh"
             android:textColor="#009688" />
+
+        <Button
+            android:id="@+id/senddata_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#3B5CFF"
+            android:padding="10dp"
+            android:text="Gửi"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 </LinearLayout>

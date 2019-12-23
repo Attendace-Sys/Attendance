@@ -1,7 +1,7 @@
 package com.project.attendance;
 
-
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -34,13 +34,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     BottomNavigationView bottomNavigationView;
 
+    String username, password, token, email, name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkAndRequestPermissions();
+        final Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        password = intent.getStringExtra("password");
+        email = intent.getStringExtra("email");
+        token = intent.getStringExtra("token");
+        name = intent.getStringExtra("name");
 
+        checkAndRequestPermissions();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
@@ -48,10 +56,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
+
+
+
     }
 
-    HomeFragment homeFragment = new HomeFragment();
-    ProfileFragment profileFragment = new ProfileFragment();
+    HomeFragment homeFragment;
+    ProfileFragment profileFragment;
     //NotificationFragment notificationFragment = new NotificationFragment();
 
 
@@ -60,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
+                homeFragment = new HomeFragment(username, password, token);
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, homeFragment).commit();
                 return true;
 
@@ -68,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //                return true;
 
             case R.id.navigation_profile:
+                profileFragment = new ProfileFragment(username, password, token, email, name);
+
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, profileFragment).commit();
                 return true;
 

@@ -49,6 +49,7 @@ public class CheckingCardDataAdapter extends RecyclerView.Adapter<CheckingCardDa
                 intent.putExtra("room", checkingList.get(pos).getRoom());
                 intent.putExtra("numberOfWeek", checkingList.get(pos).getNumberOfWeek());
                 intent.putExtra("timeOfWeek", checkingList.get(pos).getTimeOfWeek());
+                intent.putExtra("scheduleCode", checkingList.get(pos).getScheduleCode());
                 intent.putExtra("date", checkingList.get(pos).getDate());
                 intent.putExtra("numberPresent", checkingList.get(pos).getNumber_present());
                 intent.putExtra("numberAbsent", checkingList.get(pos).getNumber_absent());

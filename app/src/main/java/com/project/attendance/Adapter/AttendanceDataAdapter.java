@@ -1,12 +1,15 @@
 package com.project.attendance.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.project.attendance.Interface.CheckboxClickListener;
 import com.project.attendance.Model.Attendance;
 import com.project.attendance.Model.Checking;
 import com.project.attendance.R;
@@ -16,13 +19,17 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAdapter.ViewHolder>{
     private ArrayList<Attendance> attendanceList;
+    private ArrayList<Attendance> updateList;
     private Context context;
 
     public AttendanceDataAdapter(Context context, ArrayList<Attendance> list) {
         this.context = context;
         this.attendanceList = list;
+        updateList = new ArrayList<Attendance>();
     }
 
     @Override
@@ -32,7 +39,7 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AttendanceDataAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final AttendanceDataAdapter.ViewHolder viewHolder, int i) {
         viewHolder.id.setText(attendanceList.get(i).getStudentId());
         viewHolder.name.setText(attendanceList.get(i).getStudentName());
         if (attendanceList.get(i).getPresent() == true)
@@ -43,6 +50,34 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
         {
             viewHolder.isPresent.setChecked(false);
         }
+
+        final int pos = i;
+        viewHolder.isPresent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Boolean isch = viewHolder.isPresent.isChecked();
+
+                Attendance attendance = attendanceList.get(pos);
+                attendance.setPresent(isch);
+
+                int index = updateList.indexOf(attendance);
+                if (index == -1) {
+                    updateList.add(attendance);
+                } else {
+                    updateList.get(index).setPresent(isch);
+                }
+            }
+        });
+    }
+
+    public ArrayList<Attendance> getUpdateList() {
+        return updateList;
+    }
+
+    public void setUpdateList(ArrayList<Attendance> updateList) {
+        this.updateList = updateList;
     }
 
     @Override
@@ -54,12 +89,14 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
 
         TextView id, name;
         CheckBox isPresent;
+        CheckboxClickListener checkboxClickListener;
 
         public ViewHolder(View view) {
             super(view);
             id = (TextView) view.findViewById(R.id.student_id_txt);
             name = (TextView) view.findViewById(R.id.student_name_txt);
             isPresent = (CheckBox) view.findViewById(R.id.present_chbox);
+
         }
 
     }

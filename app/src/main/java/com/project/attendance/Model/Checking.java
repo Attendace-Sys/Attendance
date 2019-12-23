@@ -6,9 +6,22 @@ public class Checking {
     String room;
     int numberOfWeek;
     String timeOfWeek;
+    String scheduleCode;
     String date;
     int number_present;
     int number_absent;
+
+    public Checking(String classId, String className, String room, int numberOfWeek, String timeOfWeek, String scheduleCode, String date, int number_present, int number_absent) {
+        this.classId = classId;
+        this.className = className;
+        this.room = room;
+        this.numberOfWeek = numberOfWeek;
+        this.timeOfWeek = timeOfWeek;
+        this.scheduleCode = scheduleCode;
+        this.date = date;
+        this.number_present = number_present;
+        this.number_absent = number_absent;
+    }
 
     public String getClassId() {
         return classId;
@@ -72,5 +85,13 @@ public class Checking {
 
     public void setNumber_absent(int number_absent) {
         this.number_absent = number_absent;
+    }
+
+    public String getScheduleCode() {
+        return scheduleCode;
+    }
+
+    public void setScheduleCode(String cheduleCode) {
+        this.scheduleCode = cheduleCode;
     }
 }
