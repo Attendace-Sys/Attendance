@@ -47,4 +47,13 @@ public interface ApiConfig {
     @POST("api/v1/updatelist/")
     Call<ResponseBody> sendUpdateAttendanceList(@Header("Authorization") String authorization,
                                                 @Body JsonObject data);
+
+    @Multipart
+    @POST("courses/new")
+    Call<ResponseBody> uploadCheckAttendance(
+            @Header("Authorization") String authorization,
+            @Part("schedule_code") RequestBody schedule_code,
+            @Part("json_data") RequestBody json,
+            @Part List<MultipartBody.Part> files
+    );
 }

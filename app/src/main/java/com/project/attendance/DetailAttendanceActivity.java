@@ -60,7 +60,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
 //    //Example data
 //    String studentIdList[] = {"15520001", "15520002", "15520003", "15520004", "15520005", "15520006"};
-//    String studentNameList[] = {"Nguyễn Văn A", "Nguyễn Thị B", "Lê Đình C", "Trần Tuyết E", "Cao Khánh F", "Vũ Văn H"};
+//    String studentNameList[] = {"Nguyá»…n VÄƒn A", "Nguyá»…n Thá»‹ B", "LÃª ÄÃ¬nh C", "Tráº§n Tuyáº¿t E", "Cao KhÃ¡nh F", "VÅ© VÄƒn H"};
 //    Boolean isPresentList[] = {true, true, true, false, true, true};
 
     @Override
@@ -95,7 +95,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
         m_name_class.setText(className);
         m_id_class.setText(classId);
-        m_number_week.setText("Tuần " + numberOfWeek);
+        m_number_week.setText("Tuáº§n " + numberOfWeek);
         m_time_week.setText(timeOfWeek);
         m_date.setText(dateAttend);
 //        m_num_present.setText(String.valueOf(numberPresent));
@@ -107,7 +107,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         callApi();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Không có thông tin nào thay đổi.");
+        builder.setTitle("KhÃ´ng cÃ³ thÃ´ng tin nÃ o thay Ä‘á»•i.");
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +127,10 @@ public class DetailAttendanceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(DetailAttendanceActivity.this, TakingPictureAttendanceActivity.class);
+                intent.putExtra("scheduleCode", scheduleCode);
+                startActivity(intent);
+
             }
         });
 
@@ -137,7 +141,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
                 if (updateListItem.size() != 0)
                 {
-                    String message = "  Đang gửi dữ liệu.\n  Vui lòng chờ...";
+                    String message = "  Äang gá»­i dá»¯ liá»‡u.\n  Vui lÃ²ng chá»...";
                     Utils.showLoadingIndicator(DetailAttendanceActivity.this, message);
 
                     sendUpdateData(updateListItem);
@@ -171,7 +175,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
         JSONObject ob = new JSONObject();
         try {
-             ob = new JSONObject(json);
+            ob = new JSONObject(json);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -193,12 +197,12 @@ public class DetailAttendanceActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
 
                     Utils.hideLoadingIndicator();
-                    Toast.makeText(DetailAttendanceActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailAttendanceActivity.this, "ThÃ nh cÃ´ng", Toast.LENGTH_SHORT).show();
 
                 }else
                 {
                     Utils.hideLoadingIndicator();
-                    Toast.makeText(DetailAttendanceActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailAttendanceActivity.this, "Tháº¥t báº¡i", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -207,7 +211,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utils.hideLoadingIndicator();
-                Toast.makeText(DetailAttendanceActivity.this, "Lỗi xảy ra.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailAttendanceActivity.this, "Lá»—i xáº£y ra.", Toast.LENGTH_SHORT).show();
 
             }
         });

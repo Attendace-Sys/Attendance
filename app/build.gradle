@@ -71,4 +71,9 @@ dependencies {
 
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    implementation 'com.github.jkwiecien:EasyImage:3.0.3'
+    implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "com.android.support:exifinterface:28.1.0"
 }

@@ -74,7 +74,7 @@ public class DetailCourseActivity extends AppCompatActivity {
 
         callApi();
 
-        addChecking();
+//        addChecking();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
