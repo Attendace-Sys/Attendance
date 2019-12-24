@@ -14,13 +14,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -154,7 +158,6 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
     ArrayList<Bitmap> listClassRoomImages = new ArrayList<>();
 
-
  void handleAutomaticCheckingAttendance() {
 
         //first get bitmap
@@ -171,21 +174,22 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
      ArrayList<Bitmap> listImageSentToServer = new ArrayList<>();
      ArrayList<String> listImageNameSentToServer = new ArrayList<>();
 
+
         for (int index = 0; index < listClassRoomImages.size(); index++) {
             String image_name = "classroom_image_" + index;
             String jsonFacesForEachImage = extractJsonFaceInfoOnImage(listClassRoomImages.get(index));
-
             if (jsonFacesForEachImage.length() > 0) {
 
                 listImageSentToServer.add(listClassRoomImages.get(index));
                 listImageNameSentToServer.add(image_name);
 
-                String joinedJson = "{ 'img_name':" + "\"" + image_name + "\","
-                        + "'face_rect':" + jsonFacesForEachImage + "}";
+                String joinedJson = "{ \"img_name\":" + "\"" + image_name + "\","
+                        + "\"face_rect\":" + jsonFacesForEachImage + "}";
 
                 jsonToServer += joinedJson;
 
                 jsonToServer += ",";
+
             }
 
         }
@@ -202,7 +206,8 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
         sendDataToServer(scheduleCode, listImageSentToServer, listImageNameSentToServer, jsonToServer);
 
-        runOnUiThread(new Runnable() {
+
+     runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Utils.hideLoadingIndicator();
@@ -214,17 +219,17 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
     private String rectToJson(Rect rect) {
 
-        return "{ 'top':" + rect.top + ','
-                + "'left':" + rect.left + ","
-                + "'right':" + rect.right + ","
-                + "'bottom':" + rect.bottom + "}";
+        return "{ \"top\":" + rect.top + ','
+                + "\"left\":" + rect.left + ","
+                + "\"right\":" + rect.right + ","
+                + "\"bottom\":" + rect.bottom + "}";
     }
 
 
     private String extractJsonFaceInfoOnImage(Bitmap bitmap) {
 
         Bitmap frame = bitmap;
-        final FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(frame);
+        FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(frame);
 
         FirebaseVisionFaceDetectorOptions options = new FirebaseVisionFaceDetectorOptions.Builder()
                 .build();
@@ -306,6 +311,16 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
     }
 
+    private Bitmap drawBitmapWithRetangle(Bitmap b, Rect rect) {
+        Bitmap bmOverlay = Bitmap.createBitmap(b.getWidth(), b.getHeight(), b.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10);
+        canvas.drawBitmap(b, 0, 0, null);
+        return bmOverlay;
+    }
 
     public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
 
@@ -460,6 +475,9 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         RequestBody json = RequestBody.create(MediaType.parse("text/plain"), jsonData);
 
         Log.e("parts" ,"----" + imgParts.size());
+
+        Log.e("json" ,"----" + jsonData);
+
 
         Call<ResponseBody> call = getResponse.uploadCheckAttendance(Global.token, idBody,json, imgParts);
         call.enqueue(new Callback<ResponseBody>() {
