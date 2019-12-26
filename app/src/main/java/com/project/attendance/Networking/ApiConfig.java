@@ -49,7 +49,7 @@ public interface ApiConfig {
                                                 @Body JsonObject data);
 
     @Multipart
-    @POST("courses/new")
+    @POST("courses/new/")
     Call<ResponseBody> uploadCheckAttendance(
             @Header("Authorization") String authorization,
             @Part("schedule_code") RequestBody schedule_code,
