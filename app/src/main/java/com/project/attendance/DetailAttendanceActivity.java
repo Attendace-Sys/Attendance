@@ -107,7 +107,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         callApi();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("KhÃ´ng cÃ³ thÃ´ng tin nÃ o thay Ä‘á»•i.");
+        builder.setTitle("Không có thông tin nào thay đổi.");
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +141,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
                 if (updateListItem.size() != 0)
                 {
-                    String message = "  Äang gá»­i dá»¯ liá»‡u.\n  Vui lÃ²ng chá»...";
+                    String message = "  Đang gửi dữ liệu.\n  Vui lòng chờ...";
                     Utils.showLoadingIndicator(DetailAttendanceActivity.this, message);
 
                     sendUpdateData(updateListItem);
@@ -197,12 +197,12 @@ public class DetailAttendanceActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
 
                     Utils.hideLoadingIndicator();
-                    Toast.makeText(DetailAttendanceActivity.this, "ThÃ nh cÃ´ng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailAttendanceActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
 
                 }else
                 {
                     Utils.hideLoadingIndicator();
-                    Toast.makeText(DetailAttendanceActivity.this, "Tháº¥t báº¡i", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailAttendanceActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -211,7 +211,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utils.hideLoadingIndicator();
-                Toast.makeText(DetailAttendanceActivity.this, "Lá»—i xáº£y ra.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailAttendanceActivity.this, "Có vấn đề xảy ra.", Toast.LENGTH_SHORT).show();
 
             }
         });
