@@ -49,8 +49,8 @@ public interface ApiConfig {
                                                 @Body JsonObject data);
 
     @Multipart
-    @POST("courses/new")
-    Call<ResponseBody> uploadCheckAttendance(
+    @POST("courses/new/")
+    Call<Recognitions> uploadCheckAttendance(
             @Header("Authorization") String authorization,
             @Part("schedule_code") RequestBody schedule_code,
             @Part("json_data") RequestBody json,

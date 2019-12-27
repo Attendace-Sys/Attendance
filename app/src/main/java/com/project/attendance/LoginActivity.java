@@ -85,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("token", user.getToken());
 
                         Global.token = user.getToken();
+                        Global.teacherCode = user.getUsername();
+                        Global.teacherName = user.getName();
+                        Global.email = user.getEmail();
 
                         startActivity(intent);
 

@@ -1,322 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".DetailAttendanceActivity">
 
-    <FrameLayout
-        android:id="@+id/topHeader"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
+        <FrameLayout
+            android:id="@+id/topHeader"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:background="@drawable/bg" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:background="@drawable/bg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <ImageView
+                        android:id="@+id/back"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="0.1"
+                        android:src="@drawable/ic_back" />
+
+                    <com.project.attendance.customfonts.TextView_Lato
+                        android:id="@+id/d_name_course_txt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="0.9"
+                        android:text="Danh sách điểm danh"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/info_layout"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:weightSum="1">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-
-                <ImageView
-                    android:id="@+id/back"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="0.1"
-                    android:src="@drawable/ic_back" />
-
-                <com.project.attendance.customfonts.TextView_Lato
-                    android:id="@+id/d_name_course_txt"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/courseNameTxt"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="0.9"
-                    android:text="Danh sách điểm danh"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:text="Chuyên đề Mobile"
+                    android:textSize="20sp" />
 
-
+                <TextView
+                    android:id="@+id/class_id_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="SE100.I21"
+                    android:textSize="20sp" />
             </LinearLayout>
 
-        </LinearLayout>
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorGray" />
 
-    </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-    <LinearLayout
-        android:id="@+id/info_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                <TextView
+                    android:id="@+id/number_week_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Tuần 1"
+                    android:textSize="20sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+                <TextView
+                    android:id="@+id/time_week_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:text="Thứ 2"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/courseNameTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chuyên đề Mobile"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/date_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:gravity="right"
+                    android:text="Ngày 10/09/2019"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/class_id_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorGray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/present_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:text="Có mặt: "
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/num_presnt_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:text="48"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/absent_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:text="Vắng: "
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/num_absent_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:text="1"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="SE100.I21"
-                android:textSize="20sp" />
+                android:background="@color/colorGray" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorGray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/number_week_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <View
+                android:id="@+id/view7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
                 android:layout_weight="0.5"
-                android:text="Tuần 1"
-                android:textSize="20sp" />
+                android:background="@color/colorGray" />
 
-            <TextView
-                android:id="@+id/time_week_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.6"
-                android:text="Thứ 2"
-                android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/date_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.9"
-                android:gravity="right"
-                android:text="Ngày 10/09/2019"
-                android:textSize="20sp" />
-        </LinearLayout>
+                <View
+                    android:id="@+id/view9"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorGray"></View>
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorGray" />
+                <TextView
+                    android:id="@+id/titletxt"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="MSSV"
+                    android:textColor="@color/colorPrimary1"
+                    android:textSize="18sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorGray"></View>
 
-            <TextView
-                android:id="@+id/present_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Có mặt: "
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/title2txt"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Họ tên"
+                    android:textColor="@color/colorPrimary1"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/num_presnt_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:text="48"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/absent_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Vắng: "
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/num_absent_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:text="1"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:background="@color/colorGray" />
-    </LinearLayout>
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorGray"></View>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+                <TextView
+                    android:id="@+id/title3"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Có mặt"
+                    android:textColor="@color/colorPrimary1"
+                    android:textSize="18sp" />
 
-        <View
-            android:id="@+id/view7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_weight="0.5"
-            android:background="@color/colorGray" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+                <View
+                    android:id="@+id/view11"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorGray"></View>
+            </LinearLayout>
 
             <View
-                android:id="@+id/view9"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorGray"></View>
-
-            <TextView
-                android:id="@+id/titletxt"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="MSSV"
-                android:textColor="@color/colorPrimary1"
-                android:textSize="18sp" />
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorGray"></View>
-
-            <TextView
-                android:id="@+id/title2txt"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Họ tên"
-                android:textColor="@color/colorPrimary1"
-                android:textSize="18sp" />
-
-            <View
-                android:id="@+id/view5"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorGray"></View>
-
-
-            <TextView
-                android:id="@+id/title3"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="Có mặt"
-                android:textColor="@color/colorPrimary1"
-                android:textSize="18sp" />
-
-            <View
-                android:id="@+id/view11"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorGray"></View>
+                android:background="@color/colorGray" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/view6"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_attend_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_weight="1"
-            android:background="@color/colorGray" />
+            android:layout_height="300dp"
+            android:layout_below="@id/info_layout"
+            android:background="@android:color/white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:scrollbars="vertical">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/checking_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FFEB3B"
+                android:padding="10dp"
+                android:text="Tiến hành điểm danh"
+                android:textColor="#009688" />
+
+            <Button
+                android:id="@+id/senddata_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#3B5CFF"
+                android:padding="10dp"
+                android:text="Gửi"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_attend_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/info_layout"
-        android:background="@android:color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:scrollbars="vertical">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/checking_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFEB3B"
-            android:padding="10dp"
-            android:text="Tiến hành điểm danh"
-            android:textColor="#009688" />
-
-        <Button
-            android:id="@+id/senddata_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#3B5CFF"
-            android:padding="10dp"
-            android:text="Gửi"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>

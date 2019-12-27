@@ -31,6 +31,7 @@ import com.project.attendance.Networking.AppConfig;
 import com.project.attendance.Networking.Attend;
 import com.project.attendance.Networking.Attendances;
 import com.project.attendance.Networking.DataAttendSend;
+import com.project.attendance.Networking.Result;
 import com.project.attendance.Networking.Schedule;
 import com.project.attendance.Networking.Schedules;
 import com.project.attendance.Networking.UpdateAttendance;
@@ -55,13 +56,10 @@ public class DetailAttendanceActivity extends AppCompatActivity {
     int numberOfWeek, numberPresent, numberAbsent;
 
     ArrayList<Attendance> attendanceList;
+    ArrayList<Result> listResult;
 
     AttendanceDataAdapter adapter;
 
-//    //Example data
-//    String studentIdList[] = {"15520001", "15520002", "15520003", "15520004", "15520005", "15520006"};
-//    String studentNameList[] = {"Nguyá»…n VÄƒn A", "Nguyá»…n Thá»‹ B", "LÃª ÄÃ¬nh C", "Tráº§n Tuyáº¿t E", "Cao KhÃ¡nh F", "VÅ© VÄƒn H"};
-//    Boolean isPresentList[] = {true, true, true, false, true, true};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +91,10 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         numberPresent = intent.getIntExtra("numberPresent", 0);
         numberAbsent = intent.getIntExtra("numberAbsent", 0);
 
+
         m_name_class.setText(className);
         m_id_class.setText(classId);
-        m_number_week.setText("Tuáº§n " + numberOfWeek);
+        m_number_week.setText("Tuần " + numberOfWeek);
         m_time_week.setText(timeOfWeek);
         m_date.setText(dateAttend);
 //        m_num_present.setText(String.valueOf(numberPresent));
@@ -304,6 +303,15 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         list_attend_recyclerView.setLayoutManager(linearLayoutManager);
         list_attend_recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        if ((Global.listResult != null) && (Global.nowScheduleCode == scheduleCode) && (attendanceList.size() == listResult.size()))
+        {
+
+            for (int i = 0; i< listResult.size(); i++ )
+            {
+
+                attendanceList.get(i).setPresent((listResult.get(i).getRecognized() > 0) ? true : false);
+            }
+        }
 
         adapter = new AttendanceDataAdapter(this, attendanceList);
         list_attend_recyclerView.setAdapter(adapter);

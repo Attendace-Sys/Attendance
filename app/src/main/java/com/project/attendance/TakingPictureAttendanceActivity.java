@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -24,7 +23,6 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -36,16 +34,17 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import com.project.attendance.Adapter.FaceImageDataAdapter;
 import com.project.attendance.Adapter.GridSpacingItemDecoration;
+import com.project.attendance.Adapter.ResultChekingAttendanceAdapter;
+import com.project.attendance.Model.Attendance;
 import com.project.attendance.Networking.ApiConfig;
 import com.project.attendance.Networking.AppConfig;
+import com.project.attendance.Networking.Attend;
+import com.project.attendance.Networking.Result;
+import com.project.attendance.Networking.Recognitions;
 import com.project.attendance.Utils.Utils;
-
-import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.FrameRecorder;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +55,6 @@ import java.util.concurrent.ExecutionException;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import pl.aprilapps.easyphotopicker.ChooserType;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -479,15 +477,29 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         Log.e("json" ,"----" + jsonData);
 
 
-        Call<ResponseBody> call = getResponse.uploadCheckAttendance(Global.token, idBody,json, imgParts);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Recognitions> call = getResponse.uploadCheckAttendance(Global.token, idBody,json, imgParts);
+        call.enqueue(new Callback<Recognitions>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Recognitions> call, Response<Recognitions> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
 
                         Utils.hideLoadingIndicator();
                         Toast.makeText(getApplicationContext(), "Gửi thành công!", Toast.LENGTH_SHORT).show();
+
+                        Recognitions recognitions = (Recognitions) response.body();
+
+                        ArrayList<Result> listResult = recognitions.getListStudent();
+
+//                        ArrayList<Attendance> listAttendance = convertListResultToListAttendance(listResult);
+
+                        Intent intent = new Intent(TakingPictureAttendanceActivity.this, DetailAttendanceActivity.class);
+
+                        intent.putExtra("scheduleCode", scheduleCode);
+//                        intent.putExtra("listResult", listResult);
+                        Global.listResult = listResult;
+                        Global.nowScheduleCode = scheduleCode;
+                        startActivity(intent);
 
                     }
                 } else {
@@ -497,8 +509,30 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
                 }
             }
 
+//            private ArrayList<Attendance> convertListResultToListAttendance(ArrayList<Result> listResult) {
+//
+//                ArrayList<Attendance> list = new ArrayList<>();
+//
+//                for ( Result item : listResult) {
+//
+//                    Attendance attendance = convertResultToAttendance(item);
+//                    list.add(attendance);
+//                }
+//
+//                return list;
+//            }
+
+//            private Attendance convertResultToAttendance(Result item) {
+//
+//                String attendanceCode = item.get();
+//                String studentId = item.getStudentCode();
+//                String studentName;
+//                Boolean isPresent;
+//
+//            }
+
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Recognitions> call, Throwable t) {
                 Utils.hideLoadingIndicator();
                 Toast.makeText(getApplicationContext(), "Gửi thất bại. \nVui lòng thử lại. " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
