@@ -309,6 +309,7 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
     }
 
+
     private Bitmap drawBitmapWithRetangle(Bitmap b, Rect rect) {
         Bitmap bmOverlay = Bitmap.createBitmap(b.getWidth(), b.getHeight(), b.getConfig());
         Canvas canvas = new Canvas(bmOverlay);
@@ -491,15 +492,14 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
                         ArrayList<Result> listResult = recognitions.getListStudent();
 
-//                        ArrayList<Attendance> listAttendance = convertListResultToListAttendance(listResult);
 
-                        Intent intent = new Intent(TakingPictureAttendanceActivity.this, DetailAttendanceActivity.class);
-
-                        intent.putExtra("scheduleCode", scheduleCode);
-//                        intent.putExtra("listResult", listResult);
-                        Global.listResult = listResult;
-                        Global.nowScheduleCode = scheduleCode;
-                        startActivity(intent);
+//                        Intent intent = new Intent(TakingPictureAttendanceActivity.this, DetailAttendanceActivity.class);
+//
+//                        intent.putExtra("scheduleCode", scheduleCode);
+////                        intent.putExtra("listResult", listResult);
+//                        Global.listResult = listResult;
+//                        Global.nowScheduleCode = scheduleCode;
+//                        startActivity(intent);
 
                     }
                 } else {
@@ -509,27 +509,6 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
                 }
             }
 
-//            private ArrayList<Attendance> convertListResultToListAttendance(ArrayList<Result> listResult) {
-//
-//                ArrayList<Attendance> list = new ArrayList<>();
-//
-//                for ( Result item : listResult) {
-//
-//                    Attendance attendance = convertResultToAttendance(item);
-//                    list.add(attendance);
-//                }
-//
-//                return list;
-//            }
-
-//            private Attendance convertResultToAttendance(Result item) {
-//
-//                String attendanceCode = item.get();
-//                String studentId = item.getStudentCode();
-//                String studentName;
-//                Boolean isPresent;
-//
-//            }
 
             @Override
             public void onFailure(Call<Recognitions> call, Throwable t) {
