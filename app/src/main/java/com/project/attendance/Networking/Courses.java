@@ -8,13 +8,13 @@ import com.google.gson.annotations.SerializedName;
 public class Courses {
 
     @SerializedName("classes")
-    private List<Class> mClasses;
+    private List<Course> mClasses;
 
-    public List<Class> getClasses() {
+    public List<Course> getClasses() {
         return mClasses;
     }
 
-    public void setClasses(List<Class> classes) {
+    public void setClasses(List<Course> classes) {
         mClasses = classes;
     }
 

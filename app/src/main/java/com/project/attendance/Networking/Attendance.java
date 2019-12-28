@@ -3,7 +3,7 @@ package com.project.attendance.Networking;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Attend {
+public class Attendance {
 
     @SerializedName("absent_status")
     private Boolean mAbsentStatus;

@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Class {
+public class Course {
 
     @SerializedName("course_code")
     private String mCourseCode;

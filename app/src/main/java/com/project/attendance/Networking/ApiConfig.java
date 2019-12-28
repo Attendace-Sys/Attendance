@@ -48,6 +48,11 @@ public interface ApiConfig {
     Call<ResponseBody> sendUpdateAttendanceList(@Header("Authorization") String authorization,
                                                 @Body JsonObject data);
 
+    @GET("api/v1/courses/list_student/{course_code}/")
+    Call<ListStudentOfCourse> getListStudentOfACourse(
+            @Header("Authorization") String authorization,
+            @Path("course_code") String course_code);
+
     @Multipart
     @POST("courses/new/")
     Call<Recognitions> uploadCheckAttendance(

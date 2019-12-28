@@ -23,6 +23,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -34,12 +35,10 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import com.project.attendance.Adapter.FaceImageDataAdapter;
 import com.project.attendance.Adapter.GridSpacingItemDecoration;
-import com.project.attendance.Adapter.ResultChekingAttendanceAdapter;
-import com.project.attendance.Model.Attendance;
 import com.project.attendance.Networking.ApiConfig;
 import com.project.attendance.Networking.AppConfig;
-import com.project.attendance.Networking.Attend;
-import com.project.attendance.Networking.Result;
+import com.project.attendance.Networking.JsonResponseForUploadedImage;
+import com.project.attendance.Networking.ResultRegconition;
 import com.project.attendance.Networking.Recognitions;
 import com.project.attendance.Utils.Utils;
 
@@ -72,8 +71,10 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
     protected RecyclerView recyclerView;
     protected Button cameraGalleryBtn;
     protected Button sendBtn;
+    protected ImageView backBtn;
 
-    String scheduleCode;
+    String className, classId, room, timeOfWeek, dateAttend, scheduleCode;
+    int numberOfWeek, numberPresent, numberAbsent;
     private FaceImageDataAdapter imagesAdapter;
 
     private ArrayList<MediaFile> photos = new ArrayList<>();
@@ -85,9 +86,14 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taking_picture_attendance);
 
+        Global.listBitmap = null;
+        Global.imageNames = null;
+        Global.jsonResponseForUploadedImages = null;
+
         recyclerView = findViewById(R.id.recyclerView);
         cameraGalleryBtn = findViewById(R.id.cameraGalleryBtn);
         sendBtn = findViewById(R.id.send);
+        backBtn = findViewById(R.id.back);
 
         if (savedInstanceState != null) {
             photos = savedInstanceState.getParcelableArrayList(PHOTOS_KEY);
@@ -105,7 +111,15 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
 
         Intent intent = getIntent();
+        className = intent.getStringExtra("className");
+        classId = intent.getStringExtra("classId");
+        room = intent.getStringExtra("room");
+        numberOfWeek = intent.getIntExtra("numberOfWeek", 1);
+        timeOfWeek = intent.getStringExtra("timeOfWeek");
         scheduleCode = intent.getStringExtra("scheduleCode");
+        dateAttend = intent.getStringExtra("date");
+        numberPresent = intent.getIntExtra("numberPresent", 0);
+        numberAbsent = intent.getIntExtra("numberAbsent", 0);
 
         easyImage = new EasyImage.Builder(this)
                 .setChooserTitle("Pick media")
@@ -151,12 +165,30 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
             }
         });
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TakingPictureAttendanceActivity.this, DetailAttendanceActivity.class);
+
+                intent.putExtra("classId", classId);
+                intent.putExtra("className",className);
+                intent.putExtra("room", room);
+                intent.putExtra("numberOfWeek", numberOfWeek);
+                intent.putExtra("timeOfWeek", timeOfWeek);
+                intent.putExtra("scheduleCode", scheduleCode);
+                intent.putExtra("date", dateAttend);
+                intent.putExtra("numberPresent", numberPresent);
+                intent.putExtra("numberAbsent", numberAbsent);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
     ArrayList<Bitmap> listClassRoomImages = new ArrayList<>();
 
- void handleAutomaticCheckingAttendance() {
+    void handleAutomaticCheckingAttendance() {
 
         //first get bitmap
         for (MediaFile file : photos) {
@@ -169,8 +201,8 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         //build json
 
         String jsonToServer = "[";
-     ArrayList<Bitmap> listImageSentToServer = new ArrayList<>();
-     ArrayList<String> listImageNameSentToServer = new ArrayList<>();
+        ArrayList<Bitmap> listImageSentToServer = new ArrayList<>();
+        ArrayList<String> listImageNameSentToServer = new ArrayList<>();
 
 
         for (int index = 0; index < listClassRoomImages.size(); index++) {
@@ -205,7 +237,7 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         sendDataToServer(scheduleCode, listImageSentToServer, listImageNameSentToServer, jsonToServer);
 
 
-     runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Utils.hideLoadingIndicator();
@@ -279,11 +311,16 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
 
     private static int exifToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
         return 0;
     }
+
     public static Bitmap getRightOrientationBitmap(File imageFile) {
         try {
             Bitmap sourceBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
@@ -294,7 +331,9 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
             int rotationInDegrees = exifToDegrees(rotation);
 
             Matrix matrix = new Matrix();
-            if (rotation != 0) {matrix.preRotate(rotationInDegrees);}
+            if (rotation != 0) {
+                matrix.preRotate(rotationInDegrees);
+            }
             int mBitW = Integer.parseInt(String.valueOf(sourceBitmap.getWidth()));
             int mBitH = Integer.parseInt(String.valueOf(sourceBitmap.getHeight()));
 
@@ -453,9 +492,9 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         return file;
     }
 
-    private void sendDataToServer(String schedule_code, ArrayList<Bitmap> listToSend, ArrayList<String> imageNames, String jsonData) {
+    private void sendDataToServer(String schedule_code, final ArrayList<Bitmap> listToSend, final ArrayList<String> imageNames, String jsonData) {
 
-        Log.e("listToSend" ,"----" + listToSend.size());
+        Log.e("listBitmap", "----" + listToSend.size());
 
 
         List<MultipartBody.Part> imgParts = new ArrayList<>();
@@ -464,7 +503,7 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
             String fileName = imageNames.get(index);
             File file = convertToFile(listToSend.get(index), fileName);
             RequestBody requestImg = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("files", fileName  + ".jpg", requestImg);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("files", fileName + ".jpg", requestImg);
             imgParts.add(part);
         }
 
@@ -473,33 +512,45 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         RequestBody idBody = RequestBody.create(MediaType.parse("text/plain"), schedule_code);
         RequestBody json = RequestBody.create(MediaType.parse("text/plain"), jsonData);
 
-        Log.e("parts" ,"----" + imgParts.size());
+        Log.e("parts", "----" + imgParts.size());
 
-        Log.e("json" ,"----" + jsonData);
+        Log.e("json", "----" + jsonData);
 
 
-        Call<Recognitions> call = getResponse.uploadCheckAttendance(Global.token, idBody,json, imgParts);
+        Call<Recognitions> call = getResponse.uploadCheckAttendance(Global.token, idBody, json, imgParts);
         call.enqueue(new Callback<Recognitions>() {
             @Override
             public void onResponse(Call<Recognitions> call, Response<Recognitions> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
 
-                        Utils.hideLoadingIndicator();
-                        Toast.makeText(getApplicationContext(), "Gửi thành công!", Toast.LENGTH_SHORT).show();
+
+//                        Toast.makeText(getApplicationContext(), "Gửi thành công!", Toast.LENGTH_SHORT).show();
 
                         Recognitions recognitions = (Recognitions) response.body();
 
-                        ArrayList<Result> listResult = recognitions.getListStudent();
+                        ArrayList<ResultRegconition> listResult = recognitions.getListStudent();
+                        ArrayList<JsonResponseForUploadedImage> jsonResponseForUploadedImages = recognitions.getJsonResponseForUploadedImages();
 
+                        Intent intent = new Intent(TakingPictureAttendanceActivity.this, ResultFaceRecognitionActivity.class);
 
-//                        Intent intent = new Intent(TakingPictureAttendanceActivity.this, DetailAttendanceActivity.class);
-//
-//                        intent.putExtra("scheduleCode", scheduleCode);
-////                        intent.putExtra("listResult", listResult);
-//                        Global.listResult = listResult;
-//                        Global.nowScheduleCode = scheduleCode;
-//                        startActivity(intent);
+                        intent.putExtra("classId", classId);
+                        intent.putExtra("className", className);
+                        intent.putExtra("room", room);
+                        intent.putExtra("numberOfWeek", numberOfWeek);
+                        intent.putExtra("timeOfWeek", timeOfWeek);
+                        intent.putExtra("scheduleCode", scheduleCode);
+                        intent.putExtra("date", dateAttend);
+                        intent.putExtra("numberPresent", numberPresent);
+                        intent.putExtra("numberAbsent", numberAbsent);
+//                        intent.putExtra("listResult", listResult);
+                        Global.listResult = listResult;
+                        Global.nowScheduleCode = scheduleCode;
+                        Global.listBitmap = listToSend;
+                        Global.imageNames = imageNames;
+                        Global.jsonResponseForUploadedImages = jsonResponseForUploadedImages;
+                        startActivity(intent);
+                        Utils.hideLoadingIndicator();
 
                     }
                 } else {
@@ -513,7 +564,7 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Recognitions> call, Throwable t) {
                 Utils.hideLoadingIndicator();
-                Toast.makeText(getApplicationContext(), "Gửi thất bại. \nVui lòng thử lại. " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Gửi thất bại. \nVui lòng thử lại. ", Toast.LENGTH_SHORT).show();
             }
         });
 

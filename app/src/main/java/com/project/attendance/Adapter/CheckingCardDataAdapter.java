@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.project.attendance.DetailAttendanceActivity;
 import com.project.attendance.Interface.CardClickListener;
-import com.project.attendance.Model.Checking;
+import com.project.attendance.Model.CheckingCard;
 import com.project.attendance.R;
 
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CheckingCardDataAdapter extends RecyclerView.Adapter<CheckingCardDataAdapter.ViewHolder>{
-    private ArrayList<Checking> checkingList;
+    private ArrayList<CheckingCard> checkingList;
     private Context context;
 
-    public CheckingCardDataAdapter(Context context, ArrayList<Checking> list) {
+    public CheckingCardDataAdapter(Context context, ArrayList<CheckingCard> list) {
         this.context = context;
         this.checkingList = list;
     }

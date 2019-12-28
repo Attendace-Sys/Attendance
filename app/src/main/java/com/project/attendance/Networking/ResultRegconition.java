@@ -4,7 +4,7 @@ package com.project.attendance.Networking;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Result {
+public class ResultRegconition {
 
     @SerializedName("name")
     private String mName;

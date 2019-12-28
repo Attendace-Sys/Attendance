@@ -4,34 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.project.attendance.Adapter.AttendanceDataAdapter;
 import com.project.attendance.Adapter.StudentDataAdapter;
-import com.project.attendance.Model.Attendance;
-import com.project.attendance.Model.Student;
+import com.project.attendance.Networking.ApiConfig;
+import com.project.attendance.Networking.AppConfig;
+import com.project.attendance.Networking.ListStudentOfCourse;
+import com.project.attendance.Networking.StudentItem;
 
 import java.util.ArrayList;
 
 public class ViewListStudentActivity extends AppCompatActivity {
-    TextView m_name_class, m_id_class;
+    TextView m_name_class, m_id_class, m_num_learned;
     RecyclerView list_student_recyclerView;
     ImageView back_btn;
 
     String className, classId, room, timeOfWeek;
 
-    ArrayList<Student> studentList;
-
-    //Example data
-    String studentIdList[] = {"15520001", "15520002", "15520003", "15520004", "15520005", "15520006"};
-    String studentNameList[] = {"Nguyễn Văn A", "Nguyễn Thị B", "Lê Đình C", "Trần Tuyết E", "Cao Khánh F", "Vũ Văn H"};
-    int prsents[] = {10, 9, 10, 8, 10, 10};
-    int absent[] = {0, 1, 0, 2, 0, 0};
+    ArrayList<StudentItem> studentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +37,7 @@ public class ViewListStudentActivity extends AppCompatActivity {
 
         m_name_class = (TextView) findViewById(R.id.courseNameTxt);
         m_id_class = (TextView) findViewById(R.id.class_id_txt);
+        m_num_learned = (TextView) findViewById(R.id.num_learned_txt);
 
         list_student_recyclerView = (RecyclerView) findViewById(R.id.list_student_recyclerView);
 
@@ -51,12 +49,13 @@ public class ViewListStudentActivity extends AppCompatActivity {
         room = intent.getStringExtra("room");
         timeOfWeek = intent.getStringExtra("timeOfWeek");
 
+
         m_name_class.setText(className);
         m_id_class.setText(classId);
 
-        studentList = new ArrayList<Student>();
+        studentList = new ArrayList<StudentItem>();
 
-        addStudent();
+        callApi();
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +70,34 @@ public class ViewListStudentActivity extends AppCompatActivity {
                 startActivity(intentBack);
             }
         });
+    }
 
+    void callApi()
+    {
+        ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
+
+
+        Call<ListStudentOfCourse> call = getResponse.getListStudentOfACourse("Token "+ Global.token, classId);
+        call.enqueue(new Callback<ListStudentOfCourse>() {
+            @Override
+            public void onResponse(Call<ListStudentOfCourse> call, Response<ListStudentOfCourse> response) {
+                if(response.isSuccessful()) {
+
+                    ListStudentOfCourse listStudentOfCourse = (ListStudentOfCourse) response.body();
+
+                    studentList = listStudentOfCourse.getAttends();
+
+                    addStudent();
+
+                    m_num_learned.setText( "" + (int)(studentList.get(0).getNumPresent() + studentList.get(0).getNumAbsent()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListStudentOfCourse> call, Throwable t) {
+
+            }
+        });
     }
 
     private void addStudent() {
@@ -80,16 +106,6 @@ public class ViewListStudentActivity extends AppCompatActivity {
         list_student_recyclerView.setLayoutManager(linearLayoutManager);
         list_student_recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        for (int i = 0; i < studentIdList.length; i++)
-        {
-            Student student = new Student();
-            student.setStudentId(studentIdList[i]);
-            student.setStudentName(studentNameList[i]);
-            student.setNumber_present(prsents[i]);
-            student.setNumber_absent(absent[i]);
-
-            studentList.add(student);
-        }
 
         StudentDataAdapter adapter = new StudentDataAdapter(this, studentList);
         list_student_recyclerView.setAdapter(adapter);

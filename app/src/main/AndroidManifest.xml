@@ -16,15 +16,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ImagePopActivity"
+            android:theme="@style/AppTheme.PopMe"></activity>
+
+        <activity android:name=".ResultFaceRecognitionActivity" />
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
-
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="face" />
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,18 +36,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DetectActivity"/>
+        <activity android:name=".DetectActivity" />
         <activity
             android:name=".DetailCourseActivity"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".DetailAttendanceActivity"></activity>
-
-        <activity android:name=".ViewListStudentActivity"></activity>
-
-        <activity android:name=".TakingPictureAttendanceActivity"></activity>
-
+        <activity android:name=".DetailAttendanceActivity" />
+        <activity android:name=".ViewListStudentActivity" />
+        <activity android:name=".TakingPictureAttendanceActivity" />
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".DetailAttendanceActivity">
+    tools:context=".ResultFaceRecognitionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="0.9"
-                        android:text="Danh sách điểm danh"
+                        android:text="Kết quả nhận dạng"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -83,7 +83,8 @@
                     android:id="@+id/courseNameTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chuyên đề Mobile"
+                    android:layout_weight="1"
+                    android:text="Chuyên đề Mobilexxxxxxxxxxxxxxxxxxx"
                     android:textSize="20sp" />
 
                 <TextView
@@ -169,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.4"
-                    android:text="0"
+                    android:text="48"
                     android:textSize="20sp" />
 
                 <TextView
@@ -307,22 +308,19 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/checking_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#FFEB3B"
-                android:padding="10dp"
-                android:text="Tiến hành điểm danh"
-                android:textColor="#009688" />
-
-            <Button
                 android:id="@+id/senddata_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#3B5CFF"
                 android:padding="10dp"
-                android:text="Gửi"
+                android:text="Xác nhận"
                 android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btn_reviewImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xem hình" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

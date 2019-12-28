@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class ProfileFragment extends Fragment {
 
     TextView teacherId, studentName, studentEmail;
     Button editProfile;
+    ImageButton logoutBtn;
 
     String id, name, mail, token, password;
 
@@ -68,20 +70,28 @@ public class ProfileFragment extends Fragment {
         studentName = (TextView) view.findViewById(R.id.fullNameTxt2);
         studentEmail = (TextView) view.findViewById(R.id.emailTxt2);
         editProfile = (Button) view.findViewById(R.id.edit_profile_btn);
+        logoutBtn = (ImageButton) view.findViewById(R.id.logout_btn);
 
-        teacherId.setText(id);
-        studentName.setText(name);
-        studentEmail.setText(mail);
+        teacherId.setText(Global.teacherCode);
+        studentName.setText(Global.teacherName);
+        studentEmail.setText(Global.email);
 
 
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            }
+        });
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 logout();
             }
         });
-        // Inflate the layout for this fragment
+
         return view;
     }
 

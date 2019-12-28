@@ -11,7 +11,7 @@
     <FrameLayout
         android:id="@+id/topHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="118dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -59,8 +59,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="422dp"
+                android:layout_height="55dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -71,7 +71,8 @@
                     android:text="Phòng A3.07"
                     android:textColor="@color/colorAccent"
                     android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <com.project.attendance.customfonts.Textview_lato_thin
                     android:id="@+id/d_class_time_txt"
@@ -90,7 +91,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="56dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">

@@ -1,21 +1,22 @@
 
 package com.project.attendance.Networking;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public class JsonResponseForUploadedImage {
 
     @SerializedName("face_rect")
-    private List<FaceRect> mFaceRect;
+    private ArrayList<FaceRect> mFaceRect;
     @SerializedName("img_name")
     private String mImgName;
 
-    public List<FaceRect> getFaceRect() {
+    public ArrayList<FaceRect> getFaceRect() {
         return mFaceRect;
     }
 
-    public void setFaceRect(List<FaceRect> faceRect) {
+    public void setFaceRect(ArrayList<FaceRect> faceRect) {
         mFaceRect = faceRect;
     }
 

@@ -21,9 +21,22 @@
             android:layout_width="421dp"
             android:layout_height="match_parent"
             android:gravity="top"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="16dp">
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+                <ImageButton
+                    android:id="@+id/logout_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_logout"
+                    android:tint="#000C2F86" />
+            </LinearLayout>
 
             <com.project.attendance.customfonts.MyTextView
                 android:layout_width="match_parent"
@@ -165,12 +178,6 @@
             android:layout_height="40dp"
             android:orientation="horizontal"></LinearLayout>
 
-        <View
-            android:id="@+id/view8"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dad8d8" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -181,7 +188,8 @@
                 android:id="@+id/edit_profile_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chỉnh sửa" />
+                android:text="Chỉnh sửa"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

@@ -3,14 +3,13 @@ package com.project.attendance;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.attendance.Adapter.CheckingCardDataAdapter;
-import com.project.attendance.Model.Checking;
+import com.project.attendance.Model.CheckingCard;
 import com.project.attendance.Networking.ApiConfig;
 import com.project.attendance.Networking.AppConfig;
 
@@ -18,6 +17,7 @@ import com.project.attendance.Networking.Schedule;
 import com.project.attendance.Networking.Schedules;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +30,7 @@ import retrofit2.Response;
 
 public class DetailCourseActivity extends AppCompatActivity {
 
-    ArrayList<Checking> checkingList;
+    ArrayList<CheckingCard> checkingList;
     RecyclerView checkingRecyclerView;
     Button btn_checking, btn_viewlist;
 
@@ -70,7 +70,7 @@ public class DetailCourseActivity extends AppCompatActivity {
         mTimeTv.setText(mTime);
         mRoomTv.setText(mRoom);
 
-        checkingList = new ArrayList<Checking>();
+        checkingList = new ArrayList<CheckingCard>();
 
         callApi();
 
@@ -118,13 +118,13 @@ public class DetailCourseActivity extends AppCompatActivity {
             }
 
             @RequiresApi(api = Build.VERSION_CODES.N)
-            private ArrayList<Checking> convertClassesFromCourses(Schedules schedules) {
+            private ArrayList<CheckingCard> convertClassesFromCourses(Schedules schedules) {
 
-                ArrayList<Checking> list = new ArrayList<>();
+                ArrayList<CheckingCard> list = new ArrayList<>();
 
                 for ( Schedule item : schedules.getSchedule()) {
 
-                    Checking schedule = convertClassToCourse(item);
+                    CheckingCard schedule = convertClassToCourse(item);
                     list.add(schedule);
                 }
 
@@ -133,7 +133,7 @@ public class DetailCourseActivity extends AppCompatActivity {
 
 
             @RequiresApi(api = Build.VERSION_CODES.N)
-            private Checking convertClassToCourse(Schedule item) {
+            private CheckingCard convertClassToCourse(Schedule item) {
 
                 String classId = item.getCourse();
                 String className = mName;
@@ -144,7 +144,7 @@ public class DetailCourseActivity extends AppCompatActivity {
                 String date = item.getScheduleDate();
                 int number_present = 0;
                 int number_absent = 0 ;
-                Checking checking = new Checking(classId, className, room, numberOfWeek, timeOfWeek, scheduleCode, date, number_present, number_absent );
+                CheckingCard checking = new CheckingCard(classId, className, room, numberOfWeek, timeOfWeek, scheduleCode, date, number_present, number_absent );
                 return checking;
             }
 
@@ -161,6 +161,8 @@ public class DetailCourseActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         checkingRecyclerView.setLayoutManager(linearLayoutManager);
         checkingRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        Collections.sort(checkingList);
 
         CheckingCardDataAdapter adapter = new CheckingCardDataAdapter(this, checkingList);
         checkingRecyclerView.setAdapter(adapter);

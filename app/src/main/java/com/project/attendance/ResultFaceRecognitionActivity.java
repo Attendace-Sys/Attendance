@@ -1,7 +1,6 @@
 package com.project.attendance;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +11,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -22,14 +26,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.project.attendance.Adapter.AttendanceDataAdapter;
+import com.project.attendance.Adapter.ResultAttendanceDataAdapter;
 import com.project.attendance.Model.AttendanceCard;
+import com.project.attendance.Model.ResultAttendanceCard;
 import com.project.attendance.Networking.ApiConfig;
 import com.project.attendance.Networking.AppConfig;
 import com.project.attendance.Networking.Attendance;
 import com.project.attendance.Networking.Attendances;
 import com.project.attendance.Networking.DataAttendSend;
-import com.project.attendance.Networking.ResultRegconition;
 import com.project.attendance.Networking.UpdateAttendance;
 import com.project.attendance.Utils.Utils;
 
@@ -39,28 +43,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailAttendanceActivity extends AppCompatActivity {
+public class ResultFaceRecognitionActivity extends AppCompatActivity {
 
     TextView m_name_class, m_id_class, m_number_week, m_time_week, m_date;
     TextView m_num_present, m_num_absent;
     RecyclerView list_attend_recyclerView;
     ImageView back_btn;
-    Button checking_btn;
-    Button sendData_btn;
+    Button reviewImage_btn;
+    Button confirm_btn;
 
     String className, classId, room, timeOfWeek, dateAttend, scheduleCode;
     int numberOfWeek, numberPresent, numberAbsent;
 
     ArrayList<AttendanceCard> attendanceList;
-    ArrayList<ResultRegconition> listResult;
+    ArrayList<ResultAttendanceCard> resultAttendancesList;
+//    ArrayList<ResultRegconition> listResult;
 
-    AttendanceDataAdapter adapter;
+    ResultAttendanceDataAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_attendance);
+        setContentView(R.layout.activity_result_face_recognition);
 
         m_name_class = (TextView) findViewById(R.id.courseNameTxt);
         m_id_class = (TextView) findViewById(R.id.class_id_txt);
@@ -69,8 +74,8 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         m_date = (TextView) findViewById(R.id.date_txt);
         m_num_present = (TextView) findViewById(R.id.num_presnt_txt);
         m_num_absent = (TextView) findViewById(R.id.num_absent_txt);
-        checking_btn = (Button) findViewById(R.id.checking_btn);
-        sendData_btn = (Button) findViewById(R.id.senddata_btn);
+        confirm_btn = (Button) findViewById(R.id.senddata_btn);
+        reviewImage_btn = (Button) findViewById(R.id.btn_reviewImage);
 
         list_attend_recyclerView = (RecyclerView) findViewById(R.id.list_attend_recyclerView);
 
@@ -96,61 +101,38 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 //        m_num_present.setText(String.valueOf(numberPresent));
 //        m_num_absent.setText(String.valueOf(numberAbsent));
 
-        if ((Global.listResult != null) && (Global.nowScheduleCode == scheduleCode) && (attendanceList.size() == listResult.size()))
-        {
+        attendanceList = new ArrayList<AttendanceCard>();
+        callApi();
 
-            for (int i = 0; i< listResult.size(); i++ )
-            {
-
-                attendanceList.get(i).setPresent((listResult.get(i).getRecognized() > 0) ? true : false);
-            }
-            addAttendance();
-        }else{
-            attendanceList = new ArrayList<AttendanceCard>();
-
-            callApi();
-        }
-
-
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Không có thông tin nào thay đổi.");
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Không có thông tin nào thay đổi.");
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentBack = new Intent(DetailAttendanceActivity.this, DetailCourseActivity.class);
-
-                intentBack.putExtra("iId", classId);
-                intentBack.putExtra("iName", className);
-                intentBack.putExtra("iTime", timeOfWeek);
-                intentBack.putExtra("iRoom", room);
-
-                startActivity(intentBack);
+//                Intent intentBack = new Intent(ResultFaceRecognitionActivity.this, DetailCourseActivity.class);
+//
+//                intentBack.putExtra("iId", classId);
+//                intentBack.putExtra("iName", className);
+//                intentBack.putExtra("iTime", timeOfWeek);
+//                intentBack.putExtra("iRoom", room);
+//
+//                startActivity(intentBack);
             }
         });
 
-        checking_btn.setOnClickListener(new View.OnClickListener() {
+        reviewImage_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(DetailAttendanceActivity.this, TakingPictureAttendanceActivity.class);
-
-                intent.putExtra("classId", classId);
-                intent.putExtra("className",className);
-                intent.putExtra("room", room);
-                intent.putExtra("numberOfWeek", numberOfWeek);
-                intent.putExtra("timeOfWeek", timeOfWeek);
-                intent.putExtra("scheduleCode", scheduleCode);
-                intent.putExtra("date", dateAttend);
-                intent.putExtra("numberPresent", numberPresent);
-                intent.putExtra("numberAbsent", numberAbsent);
+                Intent intent = new Intent(getApplicationContext(), ImagePopActivity.class);
+//                intent.putExtra("scheduleCode", scheduleCode);
                 startActivity(intent);
 
             }
         });
 
-        sendData_btn.setOnClickListener(new View.OnClickListener() {
+        confirm_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<AttendanceCard> updateListItem = adapter.getUpdateList();
@@ -158,15 +140,9 @@ public class DetailAttendanceActivity extends AppCompatActivity {
                 if (updateListItem.size() != 0)
                 {
                     String message = "  Đang gửi dữ liệu.\n  Vui lòng chờ...";
-                    Utils.showLoadingIndicator(DetailAttendanceActivity.this, message);
+                    Utils.showLoadingIndicator(ResultFaceRecognitionActivity.this, message);
 
                     sendUpdateData(updateListItem);
-
-                }
-                else
-                {
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
                 }
             }
         });
@@ -199,11 +175,11 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
         JsonObject convertedObject = new Gson().fromJson(json, JsonObject.class);
 
-        callApi(convertedObject);
+        callUploadApi(convertedObject);
 
     }
 
-    private void callApi(JsonObject json) {
+    private void callUploadApi(JsonObject json) {
         ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
 
 
@@ -214,12 +190,24 @@ public class DetailAttendanceActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
 
                     Utils.hideLoadingIndicator();
-                    Toast.makeText(DetailAttendanceActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ResultFaceRecognitionActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ResultFaceRecognitionActivity.this, DetailAttendanceActivity.class);
+                    intent.putExtra("classId", classId);
+                    intent.putExtra("className",className);
+                    intent.putExtra("room", room);
+                    intent.putExtra("numberOfWeek", numberOfWeek);
+                    intent.putExtra("timeOfWeek", timeOfWeek);
+                    intent.putExtra("scheduleCode", scheduleCode);
+                    intent.putExtra("date", dateAttend);
+                    intent.putExtra("numberPresent", numberPresent);
+                    intent.putExtra("numberAbsent", numberAbsent);
+                    startActivity(intent);
+
 
                 }else
                 {
                     Utils.hideLoadingIndicator();
-                    Toast.makeText(DetailAttendanceActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResultFaceRecognitionActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -228,7 +216,7 @@ public class DetailAttendanceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utils.hideLoadingIndicator();
-                Toast.makeText(DetailAttendanceActivity.this, "Có vấn đề xảy ra.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResultFaceRecognitionActivity.this, "Có vấn đề xảy ra.", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -258,10 +246,26 @@ public class DetailAttendanceActivity extends AppCompatActivity {
 
                     Attendances attendances = (Attendances) response.body();
                     attendanceList = convertClassesFromCourses(attendances);
-                    addAttendance();
 
-                    setNumPresent();
+                    resultAttendancesList = new ArrayList<ResultAttendanceCard>();
+                    if ((Global.listResult != null) && (Global.nowScheduleCode.equals(scheduleCode) == true) && (attendanceList.size() == Global.listResult.size()))
+                    {
 
+                        for (int i = 0; i< Global.listResult.size(); i++ )
+                        {
+                            for( AttendanceCard item: attendanceList)
+                            {
+                                if (item.getStudentId().equals(Global.listResult.get(i).getStudentCode()))
+                                {
+                                    Boolean isPresent = (Global.listResult.get(i).getRecognized() > 0) ? true : false;
+                                    ResultAttendanceCard resultAttendance = new ResultAttendanceCard(item.getAttendanceCode(), item.getStudentId(), item.getStudentName(), isPresent, Global.listResult.get(i).getScore());
+                                    resultAttendancesList.add(resultAttendance);
+                                }
+                            }
+                        }
+                        addAttendance();
+                        setNumPresent();
+                    }
                 }
             }
 
@@ -301,9 +305,10 @@ public class DetailAttendanceActivity extends AppCompatActivity {
     }
 
     private void setNumPresent() {
-        int sumStudent = attendanceList.size();
+//        attendanceList = adapter.getUpdateList();
+        int sumStudent = resultAttendancesList.size();
         int count = 0;
-        for ( AttendanceCard item : attendanceList) {
+        for ( ResultAttendanceCard item : resultAttendancesList) {
             if (item.getPresent() == false)
                 count ++;
         }
@@ -321,9 +326,19 @@ public class DetailAttendanceActivity extends AppCompatActivity {
         list_attend_recyclerView.setLayoutManager(linearLayoutManager);
         list_attend_recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
-
-        adapter = new AttendanceDataAdapter(this, attendanceList);
+        adapter = new ResultAttendanceDataAdapter(this, resultAttendancesList);
         list_attend_recyclerView.setAdapter(adapter);
     }
+
+    private Bitmap drawBitmapWithRetangle(Bitmap b, Rect rect, String name) {
+        Bitmap bmOverlay = Bitmap.createBitmap(b.getWidth(), b.getHeight(), b.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10);
+        canvas.drawBitmap(b, 0, 0, null);
+        return bmOverlay;
+    }
+
 }

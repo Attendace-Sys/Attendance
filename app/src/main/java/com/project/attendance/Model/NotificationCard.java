@@ -1,6 +1,6 @@
 package com.project.attendance.Model;
 
-public class Notification {
+public class NotificationCard {
     String title;
     String message;
     Boolean is_absent;

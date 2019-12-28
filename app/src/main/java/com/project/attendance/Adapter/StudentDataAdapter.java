@@ -6,8 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.project.attendance.Model.Attendance;
-import com.project.attendance.Model.Student;
+import com.project.attendance.Networking.StudentItem;
 import com.project.attendance.R;
 
 import java.util.ArrayList;
@@ -16,10 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class StudentDataAdapter extends RecyclerView.Adapter<StudentDataAdapter.ViewHolder> {
-    private ArrayList<Student> studentList;
+    private ArrayList<StudentItem> studentList;
     private Context context;
 
-    public StudentDataAdapter(Context context, ArrayList<Student> list) {
+    public StudentDataAdapter(Context context, ArrayList<StudentItem> list) {
         this.context = context;
         this.studentList = list;
     }
@@ -32,10 +31,10 @@ public class StudentDataAdapter extends RecyclerView.Adapter<StudentDataAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull StudentDataAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.id.setText(studentList.get(i).getStudentId());
-        viewHolder.name.setText(studentList.get(i).getStudentName());
-        viewHolder.number_present.setText("" + studentList.get(i).getNumber_present());
-        viewHolder.number_absent.setText("" + studentList.get(i).getNumber_absent());
+        viewHolder.id.setText(studentList.get(i).getStudentsStudentCode());
+        viewHolder.name.setText(studentList.get(i).getStudentsFirstName());
+        viewHolder.number_present.setText("" + studentList.get(i).getNumPresent());
+        viewHolder.number_absent.setText("" + studentList.get(i).getNumAbsent());
     }
 
     @Override

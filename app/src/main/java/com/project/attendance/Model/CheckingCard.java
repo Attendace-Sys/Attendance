@@ -1,6 +1,6 @@
 package com.project.attendance.Model;
 
-public class Checking {
+public class CheckingCard implements Comparable{
     String classId;
     String className;
     String room;
@@ -11,7 +11,7 @@ public class Checking {
     int number_present;
     int number_absent;
 
-    public Checking(String classId, String className, String room, int numberOfWeek, String timeOfWeek, String scheduleCode, String date, int number_present, int number_absent) {
+    public CheckingCard(String classId, String className, String room, int numberOfWeek, String timeOfWeek, String scheduleCode, String date, int number_present, int number_absent) {
         this.classId = classId;
         this.className = className;
         this.room = room;
@@ -94,4 +94,11 @@ public class Checking {
     public void setScheduleCode(String cheduleCode) {
         this.scheduleCode = cheduleCode;
     }
+
+    @Override
+    public int compareTo(Object o) {
+        int compareNumWeek = ((CheckingCard) o).getNumberOfWeek();
+        return this.numberOfWeek - compareNumWeek;
+    }
+
 }

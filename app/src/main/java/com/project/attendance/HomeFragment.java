@@ -1,39 +1,30 @@
 package com.project.attendance;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.gson.annotations.SerializedName;
 import com.project.attendance.Adapter.CourseCardDataAdapter;
-import com.project.attendance.Model.Course;
+import com.project.attendance.Model.CourseCard;
 import com.project.attendance.Networking.ApiConfig;
 import com.project.attendance.Networking.AppConfig;
 import com.project.attendance.Networking.Courses;
-import com.project.attendance.Networking.User;
-
-import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.project.attendance.Networking.Class;
+import com.project.attendance.Networking.Course;
 
 public class HomeFragment extends Fragment {
 
-    ArrayList<Course> listCourse;
+    ArrayList<CourseCard> listCourse;
     RecyclerView courseRecyclerView;
 
     String teacherId, password, token;
@@ -55,7 +46,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         courseRecyclerView = (RecyclerView) view.findViewById(R.id.courses_recyclerView);
 
-        listCourse = new ArrayList<Course>();
+        listCourse = new ArrayList<CourseCard>();
 
         callApi();
 
@@ -79,13 +70,13 @@ public class HomeFragment extends Fragment {
                 }
             }
 
-            private ArrayList<Course> convertClassesFromCourses(Courses courses) {
+            private ArrayList<CourseCard> convertClassesFromCourses(Courses courses) {
 
-                ArrayList<Course> list = new ArrayList<>();
+                ArrayList<CourseCard> list = new ArrayList<>();
 
-                for ( Class item : courses.getClasses()) {
+                for ( Course item : courses.getClasses()) {
 
-                    Course course = convertClassToCourse(item);
+                    CourseCard course = convertClassToCourse(item);
                     list.add(course);
                 }
 
@@ -93,7 +84,7 @@ public class HomeFragment extends Fragment {
             }
 
 
-    private Course convertClassToCourse(Class item) {
+    private CourseCard convertClassToCourse(Course item) {
 
                 String id = item.getCourseCode();
                 String name = item.getCourseName();
@@ -101,7 +92,7 @@ public class HomeFragment extends Fragment {
                 String time = "Thứ "+ item.getDayOfWeek();
                 String room = "";
                 String status = "";
-                Course course = new Course(id, name, teacherID, time, room, status);
+                CourseCard course = new CourseCard(id, name, teacherID, time, room, status);
                 return course;
             }
 

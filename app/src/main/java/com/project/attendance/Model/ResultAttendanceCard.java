@@ -1,17 +1,18 @@
 package com.project.attendance.Model;
 
-public class Attendance {
-
+public class ResultAttendanceCard {
     String attendanceCode;
     String studentId;
     String studentName;
     Boolean isPresent;
+    Double score;
 
-    public Attendance(String attendanceCode, String studentId, String studentName, Boolean isPresent) {
+    public ResultAttendanceCard(String attendanceCode, String studentId, String studentName, Boolean isPresent, Double score) {
         this.attendanceCode = attendanceCode;
         this.studentId = studentId;
         this.studentName = studentName;
         this.isPresent = isPresent;
+        this.score = score;
     }
 
     public String getStudentId() {
@@ -44,5 +45,13 @@ public class Attendance {
 
     public void setAttendanceCode(String attendanceCode) {
         this.attendanceCode = attendanceCode;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
     }
 }

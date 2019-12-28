@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.project.attendance.DetailCourseActivity;
 import com.project.attendance.Interface.CardClickListener;
-import com.project.attendance.Model.Course;
+import com.project.attendance.Model.CourseCard;
 import com.project.attendance.R;
 
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CourseCardDataAdapter extends RecyclerView.Adapter<CourseCardDataAdapter.ViewHolder>
 {
 
-    private ArrayList<Course> courses;
+    private ArrayList<CourseCard> courses;
     private Context context;
 
-    public CourseCardDataAdapter(Context context, ArrayList<Course> listCourse) {
+    public CourseCardDataAdapter(Context context, ArrayList<CourseCard> listCourse) {
         this.context = context;
         this.courses = listCourse;
     }

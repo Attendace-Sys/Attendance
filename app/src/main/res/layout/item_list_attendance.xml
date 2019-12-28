@@ -14,6 +14,7 @@
         android:background="@color/colorGray" />
 
     <LinearLayout
+        android:id="@+id/layout_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -28,6 +29,8 @@
             android:id="@+id/student_id_txt"
             android:layout_width="100dp"
             android:layout_height="match_parent"
+            android:background="#2196F3"
+            android:backgroundTint="#00181A74"
             android:gravity="center"
             android:text="15520001"
             android:textColor="@color/colorPrimary1"

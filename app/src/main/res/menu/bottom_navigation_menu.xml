@@ -7,7 +7,7 @@
 
 <!--    <item android:id="@+id/navigation_notification"-->
 <!--        android:icon="@drawable/bell"-->
-<!--        android:title="Notification" />-->
+<!--        android:title="NotificationCard" />-->
 
     <item android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_face_black_24dp"

@@ -10,7 +10,7 @@ public class Recognitions {
     @SerializedName("json_response_for_uploaded_images")
     private ArrayList<JsonResponseForUploadedImage> mJsonResponseForUploadedImages;
     @SerializedName("list_student")
-    private ArrayList<Result> mListStudent;
+    private ArrayList<ResultRegconition> mListStudent;
 
     public ArrayList<JsonResponseForUploadedImage> getJsonResponseForUploadedImages() {
         return mJsonResponseForUploadedImages;
@@ -20,11 +20,11 @@ public class Recognitions {
         mJsonResponseForUploadedImages = jsonResponseForUploadedImages;
     }
 
-    public ArrayList<Result> getListStudent() {
+    public ArrayList<ResultRegconition> getListStudent() {
         return mListStudent;
     }
 
-    public void setListStudent(ArrayList<Result> listStudent) {
+    public void setListStudent(ArrayList<ResultRegconition> listStudent) {
         mListStudent = listStudent;
     }
 
