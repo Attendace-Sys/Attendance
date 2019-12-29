@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.project.attendance.Networking.JsonResponseForUploadedImage;
@@ -40,8 +41,7 @@ public class ImagePopDataAdapter  extends RecyclerView.Adapter<ImagePopDataAdapt
     public void onBindViewHolder(final ImagePopDataAdapter.ViewHolder viewHolder, int position) {
 
         viewHolder.img.setImageBitmap(imageBitmaps.get(position));
-
-
+        viewHolder.txtNameImage.setText("Hình " + position);
     }
 
     @Override
@@ -51,10 +51,12 @@ public class ImagePopDataAdapter  extends RecyclerView.Adapter<ImagePopDataAdapt
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
+        TextView txtNameImage;
 
         public ViewHolder(View view) {
             super(view);
             img = view.findViewById(R.id.imageView);
+            txtNameImage = view.findViewById(R.id.txt_image_name);
         }
     }
 }

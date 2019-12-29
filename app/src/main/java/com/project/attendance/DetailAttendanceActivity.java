@@ -212,9 +212,10 @@ public class DetailAttendanceActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
-
+                    attendanceList = adapter.getTempAttendanceList();
                     Utils.hideLoadingIndicator();
                     Toast.makeText(DetailAttendanceActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+                    setNumPresent();
 
                 }else
                 {

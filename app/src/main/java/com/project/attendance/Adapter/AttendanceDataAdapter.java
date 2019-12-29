@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAdapter.ViewHolder>{
     private ArrayList<AttendanceCard> attendanceList;
+    private ArrayList<AttendanceCard> tempAttendanceList;
     private ArrayList<AttendanceCard> updateList;
     private Context context;
 
@@ -25,6 +26,7 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
         this.context = context;
         this.attendanceList = list;
         updateList = new ArrayList<AttendanceCard>();
+        tempAttendanceList = attendanceList;
     }
 
     @Override
@@ -57,6 +59,8 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
                 AttendanceCard attendance = attendanceList.get(pos);
                 attendance.setPresent(isch);
 
+                tempAttendanceList.get(pos).setPresent(isch);
+
                 int index = updateList.indexOf(attendance);
                 if (index == -1) {
                     updateList.add(attendance);
@@ -73,6 +77,14 @@ public class AttendanceDataAdapter extends RecyclerView.Adapter<AttendanceDataAd
 
     public void setUpdateList(ArrayList<AttendanceCard> updateList) {
         this.updateList = updateList;
+    }
+
+    public ArrayList<AttendanceCard> getTempAttendanceList() {
+        return tempAttendanceList;
+    }
+
+    public void setTempAttendanceList(ArrayList<AttendanceCard> tempAttendanceList) {
+        this.tempAttendanceList = tempAttendanceList;
     }
 
     @Override

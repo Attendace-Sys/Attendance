@@ -14,12 +14,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.media.FaceDetector;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.project.attendance.Adapter.FaceImageDataAdapter;
 import com.project.attendance.Adapter.ImagePopDataAdapter;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 
 public class ImagePopActivity extends Activity {
 
+    TextView txtClose;
     ArrayList<Bitmap> listDrawBitmap;
     private ImagePopDataAdapter imagesAdapter;
     protected RecyclerView recyclerView;
@@ -45,15 +49,16 @@ public class ImagePopActivity extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*0.95), (int) (height*.9));
-
+        getWindow().setLayout((int)(width*0.9), (int) (height*.8));
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.gravity = Gravity.BOTTOM;
-        params.x = 0;
-        params.y = -20;
+        params.gravity = Gravity.CENTER;
+//        params.x = 0;
+//        params.y = -20;
 
         getWindow().setAttributes(params);
 
+        txtClose = (TextView) findViewById(R.id.txtclose);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         listDrawBitmap = new ArrayList<Bitmap>();
@@ -71,6 +76,13 @@ public class ImagePopActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(imagesAdapter);
+
+        txtClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

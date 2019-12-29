@@ -57,10 +57,8 @@ public class ResultFaceRecognitionActivity extends AppCompatActivity {
 
     ArrayList<AttendanceCard> attendanceList;
     ArrayList<ResultAttendanceCard> resultAttendancesList;
-//    ArrayList<ResultRegconition> listResult;
 
     ResultAttendanceDataAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +96,6 @@ public class ResultFaceRecognitionActivity extends AppCompatActivity {
         m_number_week.setText("Tuần " + numberOfWeek);
         m_time_week.setText(timeOfWeek);
         m_date.setText(dateAttend);
-//        m_num_present.setText(String.valueOf(numberPresent));
-//        m_num_absent.setText(String.valueOf(numberAbsent));
 
         attendanceList = new ArrayList<AttendanceCard>();
         callApi();
@@ -110,14 +106,18 @@ public class ResultFaceRecognitionActivity extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intentBack = new Intent(ResultFaceRecognitionActivity.this, DetailCourseActivity.class);
-//
-//                intentBack.putExtra("iId", classId);
-//                intentBack.putExtra("iName", className);
-//                intentBack.putExtra("iTime", timeOfWeek);
-//                intentBack.putExtra("iRoom", room);
-//
-//                startActivity(intentBack);
+                Intent intent = new Intent(ResultFaceRecognitionActivity.this, DetailAttendanceActivity.class);
+
+                intent.putExtra("classId", classId);
+                intent.putExtra("className",className);
+                intent.putExtra("room", room);
+                intent.putExtra("numberOfWeek", numberOfWeek);
+                intent.putExtra("timeOfWeek", timeOfWeek);
+                intent.putExtra("scheduleCode", scheduleCode);
+                intent.putExtra("date", dateAttend);
+                intent.putExtra("numberPresent", numberPresent);
+                intent.putExtra("numberAbsent", numberAbsent);
+                startActivity(intent);
             }
         });
 
@@ -126,7 +126,6 @@ public class ResultFaceRecognitionActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getApplicationContext(), ImagePopActivity.class);
-//                intent.putExtra("scheduleCode", scheduleCode);
                 startActivity(intent);
 
             }
@@ -329,16 +328,4 @@ public class ResultFaceRecognitionActivity extends AppCompatActivity {
         adapter = new ResultAttendanceDataAdapter(this, resultAttendancesList);
         list_attend_recyclerView.setAdapter(adapter);
     }
-
-    private Bitmap drawBitmapWithRetangle(Bitmap b, Rect rect, String name) {
-        Bitmap bmOverlay = Bitmap.createBitmap(b.getWidth(), b.getHeight(), b.getConfig());
-        Canvas canvas = new Canvas(bmOverlay);
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
-        canvas.drawBitmap(b, 0, 0, null);
-        return bmOverlay;
-    }
-
 }
