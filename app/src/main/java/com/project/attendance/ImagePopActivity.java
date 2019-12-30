@@ -49,14 +49,14 @@ public class ImagePopActivity extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*0.9), (int) (height*.8));
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.gravity = Gravity.CENTER;
+//        getWindow().setLayout((int)(width), (int) (height*.8));
+//        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        WindowManager.LayoutParams params = getWindow().getAttributes();
+//        params.gravity = Gravity.CENTER;
 //        params.x = 0;
 //        params.y = -20;
 
-        getWindow().setAttributes(params);
+//        getWindow().setAttributes(params);
 
         txtClose = (TextView) findViewById(R.id.txtclose);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
