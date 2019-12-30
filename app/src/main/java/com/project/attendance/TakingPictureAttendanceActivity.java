@@ -187,9 +187,11 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
     }
 
     ArrayList<Bitmap> listClassRoomImages = new ArrayList<>();
+    long start = 0;
 
     void handleAutomaticCheckingAttendance() {
 
+        start = System.currentTimeMillis();
         //first get bitmap
         for (MediaFile file : photos) {
             Bitmap bitmap = getRightOrientationBitmap(file.getFile());
@@ -197,6 +199,7 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
                 listClassRoomImages.add(bitmap);
             }
         }
+
 
         //build json
 
@@ -237,12 +240,12 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         sendDataToServer(scheduleCode, listImageSentToServer, listImageNameSentToServer, jsonToServer);
 
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Utils.hideLoadingIndicator();
-            }
-        });
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Utils.hideLoadingIndicator();
+//            }
+//        });
 
     }
 
@@ -495,7 +498,9 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
     private void sendDataToServer(String schedule_code, final ArrayList<Bitmap> listToSend, final ArrayList<String> imageNames, String jsonData) {
 
         Log.e("listBitmap", "----" + listToSend.size());
-
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        Log.e("Start prepare files = ", "" + timeElapsed);
 
         List<MultipartBody.Part> imgParts = new ArrayList<>();
 
@@ -516,11 +521,17 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
         Log.e("json", "----" + jsonData);
 
+        finish = System.currentTimeMillis();
+        timeElapsed = finish - start;
+        Log.e("Time to prepare data = ", "" + timeElapsed);
 
         Call<Recognitions> call = getResponse.uploadCheckAttendance(Global.token, idBody, json, imgParts);
         call.enqueue(new Callback<Recognitions>() {
             @Override
             public void onResponse(Call<Recognitions> call, Response<Recognitions> response) {
+                long finish = System.currentTimeMillis();
+                long timeElapsed = finish - start;
+                Log.e("Time execute = ", "" + timeElapsed);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
 

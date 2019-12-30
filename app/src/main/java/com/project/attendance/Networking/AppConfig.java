@@ -3,6 +3,8 @@ package com.project.attendance.Networking;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -27,9 +29,13 @@ public class AppConfig {
 
         if (retrofit == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(2, TimeUnit.MINUTES)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .writeTimeout(120, TimeUnit.SECONDS)
+                    .build();
 //                    .addNetworkInterceptor(interceptor)
 //                    .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .build();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
