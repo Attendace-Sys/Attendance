@@ -28,6 +28,8 @@ import com.project.attendance.Adapter.FaceImageDataAdapter;
 import com.project.attendance.Adapter.ImagePopDataAdapter;
 import com.project.attendance.Networking.FaceRect;
 
+import org.bytedeco.javacpp.presets.opencv_core;
+
 import java.util.ArrayList;
 
 public class ImagePopActivity extends Activity {
@@ -73,8 +75,10 @@ public class ImagePopActivity extends Activity {
         }
 
         imagesAdapter = new ImagePopDataAdapter(this, listDrawBitmap);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(this);
+        linearLayout.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerView.setLayoutManager(linearLayout);
+//        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(imagesAdapter);
 
         txtClose.setOnClickListener(new View.OnClickListener() {
@@ -92,12 +96,12 @@ public class ImagePopActivity extends Activity {
         Bitmap bmOverlay = Bitmap.createBitmap(b.getWidth(), b.getHeight(), b.getConfig());
         Canvas canvas = new Canvas(bmOverlay);
         Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
+//        paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(b.getHeight()/100);
+
 
         Paint paintText = new Paint();
-        paintText.setColor(Color.BLUE);
+//        paintText.setColor(Color.BLUE);
         paintText.setStyle(Paint.Style.FILL);
 
 
@@ -110,20 +114,28 @@ public class ImagePopActivity extends Activity {
             rect.right = Math.toIntExact(face.getRight());
             rect.bottom = Math.toIntExact(face.getBottom());
             Double score = face.getScore();
-            if ((score > 0.05) && (score <= 0.10))
+            if(score <= 0.04)
+            {
+                paint.setColor(Color.GREEN);
+                paintText.setColor(Color.GREEN);
+            } else if ((score > 0.04) && (score < 0.06))
             {
                 paint.setColor(Color.YELLOW);
                 paintText.setColor(Color.YELLOW);
-            }else if (score > 0.10)
+            } else if (score >= 0.06)
             {
                 paint.setColor(Color.RED);
                 paintText.setColor(Color.RED);
             }
             int height = rect.bottom - rect.top;
             int weight = rect.right - rect.left;
+            paint.setStrokeWidth(height/20);
             paintText.setTextSize(height/5);
             canvas.drawRect(rect, paint);
-            canvas.drawText(face.getName(),face.getLeft(), face.getBottom() + weight/5, paintText);
+            String fScore = String.format("%.3f", face.getScore());
+            canvas.drawText(face.getName(),face.getLeft(), face.getTop() - weight/7, paintText);
+            canvas.drawText(face.getStudentId() + " - " + fScore,face.getLeft(), face.getTop() - weight/7 - paintText.descent() + paintText.ascent(), paintText);
+
         }
         return bmOverlay;
     }

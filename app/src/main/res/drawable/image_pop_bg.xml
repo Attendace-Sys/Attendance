@@ -6,8 +6,8 @@
         android:endColor="@color/colorPrimary2"
         android:angle="270"
         />
-    <corners
-        android:radius="30dp"/>
+<!--    <corners-->
+<!--        android:radius="30dp"/>-->
 <!--        android:bottomLeftRadius="0dp"-->
 <!--        android:bottomRightRadius="0dp"-->
 <!--        />-->

@@ -4,69 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/actionbar_bg"
     android:orientation="vertical"
     tools:context=".DetailAttendanceActivity">
 
-    <FrameLayout
-        android:id="@+id/topHeader"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:background="@drawable/bg" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/ic_back" />
+
+            <com.project.attendance.customfonts.TextView_Lato
+                android:id="@+id/d_name_course_txt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-
-                <ImageView
-                    android:id="@+id/back"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="0.1"
-                    android:src="@drawable/ic_back" />
-
-                <com.project.attendance.customfonts.TextView_Lato
-                    android:id="@+id/d_name_course_txt"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="0.9"
-                    android:text="Chụp hình điểm danh "
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:text="Điểm danh khuôn mặt"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-    </FrameLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/top"
@@ -122,20 +102,21 @@
                 android:id="@+id/cameraGalleryBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#FFEB3B"
+                android:background="@drawable/button_stroke"
                 android:padding="10dp"
                 android:text="Chụp hình hoặc chọn từ thư viện"
-                android:textColor="#009688" />
+                android:textColor="@color/textBold" />
 
             <Button
                 android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#3B5CFF"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_fill"
                 android:padding="10dp"
                 android:text="Tự động điểm danh"
-                android:textColor="#FFFFFF" />
+                android:textColor="@color/whitecolor" />
         </LinearLayout>
     </RelativeLayout>
-
+    </LinearLayout>
 </LinearLayout>

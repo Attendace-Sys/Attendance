@@ -53,11 +53,11 @@ public class ResultAttendanceDataAdapter extends RecyclerView.Adapter<ResultAtte
             viewHolder.isPresent.setChecked(false);
         }
         Double score = attendanceList.get(i).getScore();
-        if (score >= 0.00 && score <= 0.05) {
-            viewHolder.layout_color.setBackgroundColor(0xFF7BE7F5);
-        } else if (score > 0.05 && score <= 0.10) {
-            viewHolder.layout_color.setBackgroundColor(0xFFE9DD76);
-        } else if (score > 0.10) {
+        if (score <= 0.04) {
+            viewHolder.layout_color.setBackgroundColor(0xFF84F597);
+        } else if (score > 0.04 && score < 0.06) {
+            viewHolder.layout_color.setBackgroundColor(0xFFE6E906);
+        } else if (score >= 0.06) {
             viewHolder.layout_color.setBackgroundColor(0xFFF8877F);
         }
 

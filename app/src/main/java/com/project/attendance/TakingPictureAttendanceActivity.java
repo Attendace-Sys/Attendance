@@ -209,7 +209,7 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
 
         for (int index = 0; index < listClassRoomImages.size(); index++) {
-            String image_name = "classroom_image_" + index;
+            String image_name = classId + "_buoi_" + numberOfWeek + "_hinh_" + index;
             String jsonFacesForEachImage = extractJsonFaceInfoOnImage(listClassRoomImages.get(index));
             if (jsonFacesForEachImage.length() > 0) {
 
@@ -238,15 +238,6 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
 
         sendDataToServer(scheduleCode, listImageSentToServer, listImageNameSentToServer, jsonToServer);
-
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Utils.hideLoadingIndicator();
-//            }
-//        });
-
     }
 
 
@@ -497,7 +488,6 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
 
     private void sendDataToServer(String schedule_code, final ArrayList<Bitmap> listToSend, final ArrayList<String> imageNames, String jsonData) {
 
-        Log.e("listBitmap", "----" + listToSend.size());
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
         Log.e("Start prepare files = ", "" + timeElapsed);
@@ -517,7 +507,6 @@ public class TakingPictureAttendanceActivity extends AppCompatActivity {
         RequestBody idBody = RequestBody.create(MediaType.parse("text/plain"), schedule_code);
         RequestBody json = RequestBody.create(MediaType.parse("text/plain"), jsonData);
 
-        Log.e("parts", "----" + imgParts.size());
 
         Log.e("json", "----" + jsonData);
 

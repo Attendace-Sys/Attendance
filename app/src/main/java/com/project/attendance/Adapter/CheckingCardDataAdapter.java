@@ -35,7 +35,7 @@ public class CheckingCardDataAdapter extends RecyclerView.Adapter<CheckingCardDa
 
     @Override
     public void onBindViewHolder(@NonNull CheckingCardDataAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.week.setText("#" + checkingList.get(i).getNumberOfWeek());
+        viewHolder.week.setText("" + checkingList.get(i).getNumberOfWeek());
         viewHolder.date.setText(checkingList.get(i).getDate());
         viewHolder.number_present.setText("Có mặt: "+ checkingList.get(i).getNumber_present());
         viewHolder.number_absent.setText("Vắng: " + checkingList.get(i).getNumber_absent());

@@ -22,7 +22,7 @@ import com.project.attendance.Networking.StudentItem;
 import java.util.ArrayList;
 
 public class ViewListStudentActivity extends AppCompatActivity {
-    TextView m_name_class, m_id_class, m_num_learned;
+    TextView m_name_class, m_id_class, m_num_learned, sum_num_learn_txt;
     RecyclerView list_student_recyclerView;
     ImageView back_btn;
 
@@ -38,7 +38,7 @@ public class ViewListStudentActivity extends AppCompatActivity {
         m_name_class = (TextView) findViewById(R.id.courseNameTxt);
         m_id_class = (TextView) findViewById(R.id.class_id_txt);
         m_num_learned = (TextView) findViewById(R.id.num_learned_txt);
-
+        sum_num_learn_txt = (TextView) findViewById(R.id.sum_num_learn_txt);
         list_student_recyclerView = (RecyclerView) findViewById(R.id.list_student_recyclerView);
 
         back_btn = (ImageView) findViewById(R.id.back);
@@ -48,7 +48,6 @@ public class ViewListStudentActivity extends AppCompatActivity {
         classId = intent.getStringExtra("classId");
         room = intent.getStringExtra("room");
         timeOfWeek = intent.getStringExtra("timeOfWeek");
-
 
         m_name_class.setText(className);
         m_id_class.setText(classId);
@@ -90,6 +89,8 @@ public class ViewListStudentActivity extends AppCompatActivity {
                     addStudent();
 
                     m_num_learned.setText( "" + (int)(studentList.get(0).getNumPresent() + studentList.get(0).getNumAbsent()));
+
+                    sum_num_learn_txt.setText("" + (int)(studentList.get(0).getNumPresent() + studentList.get(0).getNumAbsent()));
                 }
             }
 
